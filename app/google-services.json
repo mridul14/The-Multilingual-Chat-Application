@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "529751067910",
+    "firebase_url": "https://demotraining-d417a.firebaseio.com",
+    "project_id": "demotraining-d417a",
+    "storage_bucket": "demotraining-d417a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529751067910:android:30ac4e2f537d8fe7",
+        "android_client_info": {
+          "package_name": "trainedge.demotraining"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529751067910-mkfkpbrv1l2gcjv76sgkofe4fqaeo69o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "trainedge.demotraining",
+            "certificate_hash": "92389556c67fca0164f4afbc514df540978c65ef"
+          }
+        },
+        {
+          "client_id": "529751067910-ik6ej5bu8uu7h6lk6lscevovdu4923ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNrMztdXZUyKytX5aQx5JM_oiBJQpm4m8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "529751067910-ik6ej5bu8uu7h6lk6lscevovdu4923ph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
