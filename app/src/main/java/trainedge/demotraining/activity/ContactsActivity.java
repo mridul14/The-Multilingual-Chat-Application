@@ -36,6 +36,7 @@ public class ContactsActivity extends BasicActivity{
     private RecyclerView rvUser;
     private EditText etSearchTerm;
     private String searchTerm;
+    private FirebaseUser currentUser;
 
 
     @Override
@@ -52,13 +53,15 @@ public class ContactsActivity extends BasicActivity{
 
         ImageView ivSearch = (ImageView) findViewById(R.id.ivSearch);
         final List<User> userData = new ArrayList<>();
-        final UserAdapter uAdapter = new UserAdapter(userData,getApplication());
+        final UserAdapter uAdapter = new UserAdapter(userData,this);
         rvUser.setAdapter(uAdapter);
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         RecyclerView.ItemAnimator itemAnimator=new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
         itemAnimator.setRemoveDuration(1000);
         rvUser.setItemAnimator(itemAnimator);
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         ivSearch.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -70,12 +73,13 @@ public class ContactsActivity extends BasicActivity{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int pos=0;
+                        userData.clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             String email = snapshot.child("email").getValue(String.class);
                             String name = snapshot.child("name").getValue(String.class);
                             String photo = snapshot.child("photo").getValue(String.class);
                             String id = snapshot.getKey();
-                            if (email != null && email.contains(searchTerm)) {
+                            if (email != null && email.contains(searchTerm) && !email.equals(currentUser.getEmail())) {
                                 //add to arraylist
                                 uAdapter.insert(pos,new User(name,email,id,photo));
 

@@ -34,18 +34,19 @@ import static android.R.id.list;
 
 public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
-    Context context;
+    ContactsActivity context;
     private DatabaseReference ContactChoice;
     List<User> userList;
-    FirebaseAuth mAuth=FirebaseAuth.getInstance();
+    private final FirebaseUser currentUser;
+    private final DatabaseReference invitedUser;
 
 
-    public UserAdapter(List<User> userList, Context context) {
+    public UserAdapter(List<User> userList, ContactsActivity context) {
         this.context = context;
         this.userList = userList;
-        ContactChoice = FirebaseDatabase.getInstance().getReference("Contact");
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        ContactChoice = FirebaseDatabase.getInstance().getReference(currentUser.getUid());
+        invitedUser = ContactChoice.child("Contacts");
 
     }
 
@@ -60,21 +61,32 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
         final User user = userList.get(position);
         holder.tvUser.setText(user.name);
         holder.tvUserMail.setText(user.email);
-        final String a=user.email;
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseUser user=mAuth.getCurrentUser();
-                DatabaseReference contactDb=FirebaseDatabase.getInstance().getReference(user.getUid());
-                contactDb.child("contacts");
-                HashMap<String,Object> map=new HashMap<>();
-                map.put("email",a);
+                context.showProgressDialog("Adding....");
+                addToFirebase(user, holder.btnAdd);
+                //view.setEnabled(false);
+
             }
         });
-        
+
     }
 
-    
+    private void addToFirebase(User user, Button btnAdd) {
+        invitedUser.child(user.id).setValue(user.name, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    context.hideProgressDialog();
+                }
+            }
+        });
+        btnAdd.setText("added");
+
+
+    }
+
 
     public void remove(User data) {
         int position = userList.indexOf(data);
@@ -82,8 +94,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
         notifyItemRemoved(position);
 
     }
-
- 
 
 
     @Override
@@ -98,11 +108,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
     public void insert(int pos, User user) {
         // Insert a new item to the RecyclerView on a predefined position
-            userList.add(pos, user);
-            notifyItemInserted(pos);
-
-
+        userList.add(user);
+        notifyItemInserted(pos);
     }
 
-   
 }
