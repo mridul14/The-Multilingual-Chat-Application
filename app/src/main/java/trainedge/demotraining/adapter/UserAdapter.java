@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +62,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
         final User user = userList.get(position);
         holder.tvUser.setText(user.name);
         holder.tvUserMail.setText(user.email);
+        Glide.with(context).load(user.photo).into(holder.ivPhoto);
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
