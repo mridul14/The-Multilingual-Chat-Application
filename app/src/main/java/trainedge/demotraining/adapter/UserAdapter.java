@@ -111,7 +111,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
     public void insert(int pos, User user) {
         // Insert a new item to the RecyclerView on a predefined position
         userList.add(user);
-        notifyItemInserted(pos);
+        notifyDataSetChanged();
     }
 
 }
