@@ -65,7 +65,7 @@ public class ContactsActivity extends BasicActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference("Users");
         showProgressDialog("loading...");
-        DatabaseReference myContactsDb = usersDb;
+        DatabaseReference myContactsDb = FirebaseDatabase.getInstance().getReference(currentUser.getUid()).child("Contacts");
         myContactsDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -107,7 +107,7 @@ public class ContactsActivity extends BasicActivity {
                                 String photo = snapshot.child("photo").getValue(String.class);
                                 String id = snapshot.getKey();
                                 for (int i = 0; i < loadMyContacts.size(); i++) {
-                                    if (loadMyContacts.get(i) == id) {
+                                    if (loadMyContacts.get(i).equals(id)) {
                                         isPresent = true;
                                     }
                                 }
