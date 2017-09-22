@@ -75,7 +75,7 @@ public class ContactsActivity extends BasicActivity {
                         loadMyContacts.add(snapshot.getKey());
 
                     }
-                    hideProgressDialog();
+                    hideProgressDialog(d);
                     isLoaded = true;
                 }
             }
