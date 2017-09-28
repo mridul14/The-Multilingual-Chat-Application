@@ -1,48 +1,36 @@
 package trainedge.demotraining.adapter;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import trainedge.demotraining.R;
-import trainedge.demotraining.activity.ContactsActivity;
+import trainedge.demotraining.activity.AddContactsActivity;
 import trainedge.demotraining.holder.UserHolder;
 import trainedge.demotraining.model.User;
-
-import static android.R.attr.data;
-import static android.R.id.list;
 
 
 public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
-    ContactsActivity context;
+    AddContactsActivity context;
     private DatabaseReference ContactChoice;
     List<User> userList;
     private final FirebaseUser currentUser;
     private final DatabaseReference invitedUser;
 
 
-    public UserAdapter(List<User> userList, ContactsActivity context) {
+    public UserAdapter(List<User> userList, AddContactsActivity context) {
         this.context = context;
         this.userList = userList;
         currentUser = FirebaseAuth.getInstance().getCurrentUser();

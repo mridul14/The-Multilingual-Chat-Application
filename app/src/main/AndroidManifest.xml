@@ -59,7 +59,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.AboutActivity" />
         <activity
-            android:name=".activity.ContactsActivity"
+            android:name=".activity.AddContactsActivity"
             android:label="@string/title_activity_contacts"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

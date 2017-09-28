@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import trainedge.demotraining.R;
 
@@ -20,7 +19,7 @@ public class NextActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_contacts:
-                    Intent contactsintent=new Intent(NextActivity.this,ContactsActivity.class);
+                    Intent contactsintent=new Intent(NextActivity.this,AddContactsActivity.class);
                     startActivity(contactsintent);
                     return true;
                 case R.id.navigation_chats:
