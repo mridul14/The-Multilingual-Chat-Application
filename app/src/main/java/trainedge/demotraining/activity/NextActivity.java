@@ -18,15 +18,15 @@ public class NextActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_contacts:
+                case R.id.navigation_add_contact:
                     Intent contactsintent=new Intent(NextActivity.this,AddContactsActivity.class);
                     startActivity(contactsintent);
                     return true;
-                case R.id.navigation_chats:
+                case R.id.navigation_chat:
                     Intent chatsintent=new Intent(NextActivity.this,ChatActivity.class);
                     startActivity(chatsintent);
                     return true;
-                case R.id.navigation_invites:
+                case R.id.navigation_invite:
                     Intent invitesintent=new Intent(NextActivity.this,InviteActivity.class);
                     startActivity(invitesintent);
                     return true;
