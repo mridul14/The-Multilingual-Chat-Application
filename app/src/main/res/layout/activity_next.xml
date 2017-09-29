@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -8,20 +8,43 @@
     android:orientation="vertical"
     tools:context="trainedge.demotraining.activity.NextActivity">
 
-    <FrameLayout
-        android:id="@+id/content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_horizontal_ntb"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    </FrameLayout>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation" />
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <devlight.io.library.ntb.NavigationTabBar
+            android:id="@+id/ntb"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:ntb_active_color="#fff"
+            app:ntb_animation_duration="400"
+            app:ntb_badge_bg_color="#ffff0000"
+            app:ntb_badge_gravity="top"
+            app:ntb_badge_position="right"
+            app:ntb_badge_size="10sp"
+            app:ntb_badge_title_color="#ffffffff"
+            app:ntb_badge_use_typeface="true"
+            app:ntb_badged="true"
+            app:ntb_bg_color="#000"
+            app:ntb_corners_radius="10dp"
+            app:ntb_icon_size_fraction="0.5"
+            app:ntb_inactive_color="#000"
+            app:ntb_scaled="true"
+            app:ntb_swiped="true"
+            app:ntb_tinted="true"
+            app:ntb_title_mode="all"
+            app:ntb_title_size="10sp"
+            app:ntb_titled="true"
+            app:ntb_typeface="fonts/custom_typeface.ttf" />
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>

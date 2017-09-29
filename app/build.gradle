@@ -59,6 +59,9 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
+
+    compile 'devlight.io:navigationtabbar:1.2.5'
 }
 configurations.all {
     resolutionStrategy.eachDependency {
