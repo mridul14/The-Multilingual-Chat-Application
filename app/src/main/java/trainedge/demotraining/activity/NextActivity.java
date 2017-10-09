@@ -18,12 +18,13 @@ import devlight.io.library.ntb.NavigationTabBar;
 import trainedge.demotraining.R;
 import trainedge.demotraining.fragment.AddContactFragment;
 import trainedge.demotraining.fragment.ChatFragment;
+import trainedge.demotraining.fragment.ContactsFragment;
 import trainedge.demotraining.fragment.InviteFragment;
 
-public class NextActivity extends AppCompatActivity {
+public class NextActivity extends BasicActivity {
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+  /*  private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -45,7 +46,7 @@ public class NextActivity extends AppCompatActivity {
             return false;
         }
 
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class NextActivity extends AppCompatActivity {
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_add_black_24dp),
+                        getResources().getDrawable(R.drawable.ic_person_add_black_24dp),
                         Color.parseColor(colors[0]))
                         .title("Add Contact")
                         .build()
@@ -73,14 +74,24 @@ public class NextActivity extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_person_outline_black_24dp),
+                        Color.parseColor(colors[2]))
+                        .title("Contacts")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_share_black_24dp),
                         Color.parseColor(colors[2]))
                         .title("Invite")
                         .build()
         );
+
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 1);
     }
+
+
 
     public class MyAdapter extends FragmentPagerAdapter{
 
@@ -96,6 +107,8 @@ public class NextActivity extends AppCompatActivity {
                 case 1:
                     return ChatFragment.newInstance("","");
                 case 2:
+                    return ContactsFragment.newInstance("","");
+                case 3:
                     return InviteFragment.newInstance("","");
             }
             return null;
@@ -103,7 +116,7 @@ public class NextActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
 

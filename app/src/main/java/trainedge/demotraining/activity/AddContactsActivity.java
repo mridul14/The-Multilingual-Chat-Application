@@ -48,8 +48,8 @@ public class AddContactsActivity extends BasicActivity {
 
         ImageView ivSearch = (ImageView) findViewById(R.id.ivSearch);
         final List<User> userData = new ArrayList<>();
-        final UserAdapter uAdapter = new UserAdapter(userData, this);
-        rvUser.setAdapter(uAdapter);
+       // final UserAdapter uAdapter = new UserAdapter(userData, this);
+      //  rvUser.setAdapter(uAdapter);
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
@@ -107,14 +107,14 @@ public class AddContactsActivity extends BasicActivity {
                                 }
                                 if (email != null && email.contains(searchTerm) && !email.equals(currentUser.getEmail()) && !isPresent) {
                                     //add to arraylist
-                                    uAdapter.insert(pos, new User(name, email, id, photo));
+                                    //uAdapter.insert(pos, new User(name, email, id, photo));
 
                                 }
                                 pos++;
                             }
                             if (userData.size() == 0) {
                                 userData.clear();
-                                uAdapter.notifyDataSetChanged();
+                               // uAdapter.notifyDataSetChanged();
                             }
                             hideProgressDialog();
                             //pass this to adapter

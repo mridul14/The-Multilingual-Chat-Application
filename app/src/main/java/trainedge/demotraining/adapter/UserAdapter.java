@@ -17,20 +17,21 @@ import java.util.List;
 
 import trainedge.demotraining.R;
 import trainedge.demotraining.activity.AddContactsActivity;
+import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.holder.UserHolder;
 import trainedge.demotraining.model.User;
 
 
 public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
-    AddContactsActivity context;
+    NextActivity context;
     private DatabaseReference ContactChoice;
     List<User> userList;
     private final FirebaseUser currentUser;
     private final DatabaseReference invitedUser;
 
 
-    public UserAdapter(List<User> userList, AddContactsActivity context) {
+    public UserAdapter(List<User> userList, NextActivity context) {
         this.context = context;
         this.userList = userList;
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
