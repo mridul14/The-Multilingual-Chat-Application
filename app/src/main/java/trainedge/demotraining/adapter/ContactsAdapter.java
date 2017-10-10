@@ -1,5 +1,6 @@
 package trainedge.demotraining.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import trainedge.demotraining.R;
+import trainedge.demotraining.activity.ChatActivity;
 import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.holder.ContactsHolder;
 import trainedge.demotraining.model.ContactsModel;
@@ -44,6 +46,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
         holder.container1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent=new Intent(context, ChatActivity.class);
+                context.startActivity(intent);
 
             }
         });
