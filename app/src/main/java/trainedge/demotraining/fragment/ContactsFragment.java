@@ -113,7 +113,7 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 myContacts.clear();
-                if (dataSnapshot.getChildrenCount() >=0) {
+                if (dataSnapshot.getChildrenCount() >0) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         frdId.add(snapshot.getKey());
 
