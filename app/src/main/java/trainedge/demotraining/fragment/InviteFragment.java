@@ -1,14 +1,20 @@
 package trainedge.demotraining.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.google.android.gms.appinvite.AppInviteInvitation;
 
 import trainedge.demotraining.R;
+import trainedge.demotraining.activity.AboutActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,10 +28,16 @@ public class InviteFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int INVITE_REQUEST_CODE =99 ;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View view;
+    private Button btnInvite;
+    private Button btnFeedback;
+    private Button btnRate;
+    private Button btnAbout;
 
 
     public InviteFragment() {
@@ -63,7 +75,55 @@ public class InviteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_invite, container, false);
+        view = inflater.inflate(R.layout.fragment_invite, container, false);
+        btnInvite = view.findViewById(R.id.btnInvite);
+        btnFeedback = view.findViewById(R.id.btnFeedback);
+        btnRate = view.findViewById(R.id.btnRate);
+        btnAbout =view.findViewById(R.id.btnAbout);
+        btnInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                            .setMessage("Join your friends")
+                            .setDeepLink(Uri.parse("/link"))
+                            .setCallToActionText(getString(R.string.invitation_cta))
+                            .build();
+                    startActivityForResult(intent, INVITE_REQUEST_CODE);
+                } catch (ActivityNotFoundException ac) {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    //sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharing_book_title, bookTitle));
+                    sendIntent.setType("text/plain");
+                    startActivity(sendIntent);
+                }
+            }
+        });
+        btnFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent feedbackIntent = new Intent(android.content.Intent.ACTION_SEND);
+                feedbackIntent.setType("text/html");
+                feedbackIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{getString(R.string.mail_feedback_email)});
+                feedbackIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.mail_feedback_subject));
+                feedbackIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.mail_feedback_message));
+                startActivity(Intent.createChooser(feedbackIntent, getString(R.string.title_send_feedback)));
+            }
+        });
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(getActivity(), AboutActivity.class);
+                startActivity(intent1);
+            }
+        });
+        btnRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=PackageName")));
+            }
+        });
+        return view;
     }
 
 

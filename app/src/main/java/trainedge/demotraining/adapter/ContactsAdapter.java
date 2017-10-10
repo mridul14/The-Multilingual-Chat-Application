@@ -39,6 +39,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
     public void onBindViewHolder(ContactsHolder holder, int position) {
         final User data = list.get(position);
         holder.tvUser.setText(data.name);
+        holder.tvUserMail.setText(data.email);
         Glide.with(context).load(data.photo).into(holder.ivPhoto);
         holder.container1.setOnClickListener(new View.OnClickListener() {
             @Override

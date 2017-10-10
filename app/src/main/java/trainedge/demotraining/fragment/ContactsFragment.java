@@ -113,13 +113,11 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 myContacts.clear();
-                if (dataSnapshot.getChildrenCount() >= 0) {
+                if (dataSnapshot.getChildrenCount() >=0) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         frdId.add(snapshot.getKey());
 
                     }
-                    //hideProgressDialog();
-                    Toast.makeText(getActivity(), "Data has been loaded", Toast.LENGTH_SHORT).show();
                 }
                 isLoaded = true;
                 findContact(allDb, myContacts, frdId);
@@ -163,6 +161,9 @@ public class ContactsFragment extends Fragment {
 
                     else {
                         Toast.makeText(getActivity(), "could not find data", Toast.LENGTH_SHORT).show();
+                    }
+                    if (myContacts.size()>0){
+                        cAdapter.notifyDataSetChanged();
                     }
                 }
 
