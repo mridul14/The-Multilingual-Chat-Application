@@ -12,6 +12,7 @@ import java.util.List;
 import trainedge.demotraining.R;
 import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.holder.ContactsHolder;
+import trainedge.demotraining.model.ContactsModel;
 import trainedge.demotraining.model.User;
 
 /**

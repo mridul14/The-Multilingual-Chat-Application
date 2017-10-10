@@ -5,6 +5,9 @@ package trainedge.demotraining.model;
  */
 
 public class ContactsModel {
+    public ContactsModel() {
+    }
+
     public String tvUser;
     public String tvUserMail;
 

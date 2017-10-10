@@ -21,4 +21,7 @@ public class User {
         this.photo = photo;
 
     }
+
+    public User() {
+    }
 }
