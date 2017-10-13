@@ -1,10 +1,12 @@
 package trainedge.demotraining.adapter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -23,6 +25,7 @@ import trainedge.demotraining.model.User;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
+   public static final String id_key="trainedge.demotraining";
     List<User> list;
     NextActivity context;
     public ContactsAdapter(List<User> list, NextActivity context) {
@@ -43,10 +46,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
         holder.tvUser.setText(data.name);
         holder.tvUserMail.setText(data.email);
         Glide.with(context).load(data.photo).into(holder.ivPhoto);
+
         holder.container1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context, ChatActivity.class);
+                Bundle extras=new Bundle();
+                extras.putString("id",data.id);
+                extras.putString("email",data.email);
+                intent.putExtras(extras);
                 context.startActivity(intent);
 
             }

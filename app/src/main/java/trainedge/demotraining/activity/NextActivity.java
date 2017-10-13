@@ -82,7 +82,7 @@ public class NextActivity extends BasicActivity {
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_share_black_24dp),
-                        Color.parseColor(colors[2]))
+                        Color.parseColor(colors[3]))
                         .title("Invite")
                         .build()
         );
