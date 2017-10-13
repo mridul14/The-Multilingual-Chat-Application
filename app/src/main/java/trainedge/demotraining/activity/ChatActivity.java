@@ -22,11 +22,11 @@ import java.util.HashMap;
 import trainedge.demotraining.R;
 import trainedge.demotraining.adapter.ContactsAdapter;
 
-public class ChatActivity extends AppCompatActivity{
+public class ChatActivity extends AppCompatActivity {
 
-    String id_key="trainedge.demotraining";
+    String id_key = "trainedge.demotraining";
     private FirebaseUser currentuser;
-    private DatabaseReference senderId;
+    private String senderId;
     String senderEmail;
     String receiverId;
     String receiverEmail;
@@ -50,40 +50,39 @@ public class ChatActivity extends AppCompatActivity{
 
         et_chatbox = (EditText) findViewById(R.id.et_chatbox);
         btn_chatbox_send = (Button) findViewById(R.id.btn_chatbox_send);
-        time = SystemClock.currentThreadTimeMillis();
+        time = System.currentTimeMillis();
 
         currentuser = FirebaseAuth.getInstance().getCurrentUser();
-        senderId = FirebaseDatabase.getInstance().getReference(currentuser.getUid());
-        senderEmail=FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Bundle extras=getIntent().getExtras();
-        if(extras!=null){
-            receiverId=getIntent().getStringExtra("id");
-            receiverEmail=getIntent().getStringExtra("email");
+        senderId=currentuser.getUid();
+      //  senderId = FirebaseDatabase.getInstance().getReference(currentuser.getUid());
+        senderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            receiverId = getIntent().getStringExtra("id");
+            receiverEmail = getIntent().getStringExtra("email");
             receiver_lang = getIntent().getStringExtra("lang");
         }
-        concatEmails(senderEmail,receiverEmail);
-        lang_pref = getSharedPreferences("lang_pref",MODE_PRIVATE);
-        sender_lang = lang_pref.getString("lang_key","");
-        final DatabaseReference myContactsDb=FirebaseDatabase.getInstance().getReference("messages");
+        lang_pref = getSharedPreferences("lang_pref", MODE_PRIVATE);
+        sender_lang = lang_pref.getString("lang_key", "");
+        final DatabaseReference myContactsDb = FirebaseDatabase.getInstance().getReference("messages");
         btn_chatbox_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 content = et_chatbox.getText().toString().trim();
-                HashMap<String,Object> msgHashMap=new HashMap<>();
-                msgHashMap.put("senderId",senderId);
-                msgHashMap.put("receiverId",receiverId);
+                HashMap<String, Object> msgHashMap = new HashMap<>();
+                msgHashMap.put("senderId", senderId);
+                msgHashMap.put("receiverId", receiverId);
                 msgHashMap.put("time", time);
                 msgHashMap.put("content", content);
-                msgHashMap.put("sengerlang",sender_lang );
+                msgHashMap.put("sengerlang", sender_lang);
                 msgHashMap.put("receiverlang", receiver_lang);
-                myContactsDb.child(concatEmail).push().setValue(msgHashMap, new DatabaseReference.CompletionListener() {
+                DatabaseReference chatRef = myContactsDb.child(concatEmails(senderEmail, receiverEmail));
+                chatRef.push().setValue(msgHashMap, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError!=null){
+                        if (databaseError != null) {
                             Toast.makeText(ChatActivity.this, "msg sent", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(ChatActivity.this, "error sending msg", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -94,16 +93,12 @@ public class ChatActivity extends AppCompatActivity{
     }
 
     private String concatEmails(String senderEmail, String receiverEmail) {
-        String s_temp=senderEmail.replace('@','_');
-        String s=s_temp.replace('.','_');
-        String r_temp=receiverEmail.replace('@','_');
-        String r=r_temp.replace('.','_');
-        concatEmail = s+"_"+r;
-        return concatEmail;
+        String temp = senderEmail + receiverEmail;
+        temp = temp.replace(".", "_");
+        temp = temp.replace("@", "__");
+        return temp;
 
     }
-
-
 
 
 }
