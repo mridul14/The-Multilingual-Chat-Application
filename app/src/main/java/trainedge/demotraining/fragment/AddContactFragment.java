@@ -149,6 +149,7 @@ public class AddContactFragment extends Fragment {
                                 String email = snapshot.child("email").getValue(String.class);
                                 String name = snapshot.child("name").getValue(String.class);
                                 String photo = snapshot.child("photo").getValue(String.class);
+                                String lang = snapshot.child("lang").getValue(String.class);
                                 String id = snapshot.getKey();
                                 for (int i = 0; i < loadMyContacts.size(); i++) {
                                     if (loadMyContacts.get(i).equals(id)) {
@@ -157,7 +158,7 @@ public class AddContactFragment extends Fragment {
                                 }
                                 if (email != null && email.contains(searchTerm) && !email.equals(currentUser.getEmail()) && !isPresent) {
                                     //add to arraylist
-                                    uAdapter.insert(pos, new User(name, email, id, photo));
+                                    uAdapter.insert(pos, new User(name, email, id, photo,lang));
 
                                 }
                                 pos++;

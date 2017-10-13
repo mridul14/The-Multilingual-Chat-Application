@@ -54,6 +54,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
                 Bundle extras=new Bundle();
                 extras.putString("id",data.id);
                 extras.putString("email",data.email);
+                extras.putString("lang",data.lang);
                 intent.putExtras(extras);
                 context.startActivity(intent);
 
