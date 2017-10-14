@@ -235,6 +235,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
         map.put("email",user.getEmail());
         map.put("photo",user.getPhotoUrl().toString());
         map.put("name",user.getDisplayName());
+        map.put("id",user.getUid());
         db.child(user.getUid()).setValue(map, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

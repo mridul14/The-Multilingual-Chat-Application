@@ -43,17 +43,18 @@ public class DataAdapter extends RecyclerView.Adapter<DataHolder> {
 
     Context context;
     ArrayList<Data> dataItems;
-    private Data data;
+    ArrayList<Data> actualData;
 
 
     private DatabaseReference languageChoice;
     private SharedPreferences lang_pref;
 
-    public DataAdapter(Context context, ArrayList<Data> dataItems) {
+    public DataAdapter(Context context, ArrayList<Data> dataItems, ArrayList<Data> actualData) {
         this.context = context;
         this.dataItems = dataItems;
+        this.actualData=actualData;
 
-        languageChoice = FirebaseDatabase.getInstance().getReference("LanguageChoice");
+        languageChoice = FirebaseDatabase.getInstance().getReference("Users");
         lang_pref = context.getSharedPreferences("lang_pref", MODE_PRIVATE);
     }
 
@@ -68,14 +69,15 @@ public class DataAdapter extends RecyclerView.Adapter<DataHolder> {
 
     @Override
     public void onBindViewHolder(DataHolder holder, int position) {
-        data = dataItems.get(position);
+        Data data = dataItems.get(position);
+        final Data actualItem=actualData.get(position);
 
         holder.tvLanguages.setText(data.getLanguage());
 
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String lang_name = data.getLanguage();
+                String lang_name = actualItem.getLanguage();
                 addToFirebase(lang_name);
 
             }
@@ -88,7 +90,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataHolder> {
 
         FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
 
-        languageChoice.child(currentuser.getUid()).setValue(lang_name, new DatabaseReference.CompletionListener() {
+        languageChoice.child(currentuser.getUid()).child("language").setValue(lang_name, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 

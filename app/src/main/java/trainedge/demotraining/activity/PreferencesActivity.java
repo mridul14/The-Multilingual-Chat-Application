@@ -24,7 +24,7 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
     //private DatabaseReference db;
     private RecyclerView rvLanguages;
 
-    private ArrayList<Data> dataItems;
+    private ArrayList<Data> dataItems,actualData;
     private SharedPreferences lang_pref;
 
 
@@ -43,10 +43,10 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        rvLanguages = (RecyclerView) findViewById(R.id.rvLanguage);
         dataGenerator();
+        rvLanguages = (RecyclerView) findViewById(R.id.rvLanguage);
         rvLanguages.setLayoutManager(new LinearLayoutManager(this));
-        rvLanguages.setAdapter(new DataAdapter(this,dataItems));
+        rvLanguages.setAdapter(new DataAdapter(this,dataItems,actualData));
 
 
 
@@ -73,18 +73,26 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
     private void dataGenerator() {
 
         dataItems=new ArrayList<>();
+        actualData=new ArrayList<>();
         dataItems.add(new Data("English"));
+        actualData.add(new Data("English"));
         dataItems.add(new Data("हिंदी Hindi"));
+        actualData.add(new Data("hindi"));
         dataItems.add(new Data("தமிழ் Tamil"));
+        actualData.add(new Data("tamil"));
         dataItems.add(new Data("తెలుగు Telugu"));
+        actualData.add(new Data("telugu"));
         dataItems.add(new Data("ગુજરાત Gujrati"));
+        actualData.add(new Data("gujrati"));
         dataItems.add(new Data("मराठी Marathi"));
+        actualData.add(new Data("marathi"));
         dataItems.add(new Data("français French"));
+        actualData.add(new Data("french"));
         dataItems.add(new Data("Deutsche German"));
+        actualData.add(new Data("german"));
         dataItems.add(new Data("Español Spanish"));
-        dataItems.add(new Data("italiano Italian"));
-        dataItems.add(new Data("русский Russian"));
-        dataItems.add(new Data("Latine Latin"));
+        actualData.add(new Data("spanish"));
+
 
     }
 
