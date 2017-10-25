@@ -39,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
     private String lang1;
     private SharedPreferences lang_pref;
     private String sender_lang;
+    private String conv_key;
 
 
     @Override
@@ -61,6 +62,7 @@ public class ChatActivity extends AppCompatActivity {
             receiverId = getIntent().getStringExtra("id");
             receiverEmail = getIntent().getStringExtra("email");
             receiver_lang = getIntent().getStringExtra("lang");
+            conv_key = getIntent().getStringExtra("conv_key");
         }
         lang_pref = getSharedPreferences("lang_pref", MODE_PRIVATE);
         sender_lang = lang_pref.getString("lang_key", "");
@@ -76,11 +78,12 @@ public class ChatActivity extends AppCompatActivity {
                 msgHashMap.put("content", content);
                 msgHashMap.put("sengerlang", sender_lang);
                 msgHashMap.put("receiverlang", receiver_lang);
-                DatabaseReference chatRef = myContactsDb.child(concatEmails(senderEmail, receiverEmail));
+
+                DatabaseReference chatRef = myContactsDb.child(conv_key);
                 chatRef.push().setValue(msgHashMap, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError != null) {
+                        if (databaseError == null) {
                             Toast.makeText(ChatActivity.this, "msg sent", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(ChatActivity.this, "error sending msg", Toast.LENGTH_SHORT).show();

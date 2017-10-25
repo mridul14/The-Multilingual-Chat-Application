@@ -92,6 +92,8 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
         actualData.add(new Data("german"));
         dataItems.add(new Data("Español Spanish"));
         actualData.add(new Data("spanish"));
+        dataItems.add(new Data("italiano Italian"));
+        actualData.add(new Data("italian"));
 
 
     }

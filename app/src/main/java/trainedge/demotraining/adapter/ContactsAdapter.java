@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -16,7 +21,6 @@ import trainedge.demotraining.R;
 import trainedge.demotraining.activity.ChatActivity;
 import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.holder.ContactsHolder;
-import trainedge.demotraining.model.ContactsModel;
 import trainedge.demotraining.model.User;
 
 /**
@@ -28,6 +32,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
    public static final String id_key="trainedge.demotraining";
     List<User> list;
     NextActivity context;
+    private boolean keysLoaded=false;
+
     public ContactsAdapter(List<User> list, NextActivity context) {
         this.list=list;
         this.context=context;
@@ -54,16 +60,58 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
                 Bundle extras=new Bundle();
                 extras.putString("id",data.id);
                 extras.putString("email",data.email);
-                extras.putString("lang",data.lang);
+                extras.putString("lang",data.language);
                 intent.putExtras(extras);
-                context.startActivity(intent);
+                ConverstationNodeKey(FirebaseAuth.getInstance().getCurrentUser().getEmail(),data.email,intent);
+
 
             }
         });
 
     }
 
+    private void ConverstationNodeKey(String senderEmail, String recieverEmail, final Intent intent) {
+        final String testNode1=concatEmails(senderEmail,recieverEmail);
+        final String testNode2=concatEmails(recieverEmail,senderEmail);
 
+        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String key = null;
+                if (dataSnapshot.hasChildren()){
+                    if (dataSnapshot.hasChild(testNode1)){
+                        key=testNode1;
+                    }
+                    else if(dataSnapshot.hasChild(testNode2)){
+                        key=testNode2;
+                    }
+                    else{
+                        key=testNode1;
+                    }
+                }
+                else{
+                    key=testNode1;
+                }
+                intent.putExtra("conv_key",key);
+                context.startActivity(intent);
+                keysLoaded =true;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                if (databaseError!=null){
+                    Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private String concatEmails(String senderEmail, String receiverEmail) {
+        String temp = senderEmail + receiverEmail;
+        temp = temp.replace(".", "_");
+        temp = temp.replace("@", "_");
+        return temp;
+
+    }
 
 
     @Override

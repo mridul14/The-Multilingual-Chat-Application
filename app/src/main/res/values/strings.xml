@@ -8,7 +8,13 @@
     <string name="facebook_app_id">124970788142201</string>
     <string name="fb_login_protocol_scheme">fb124970788142201</string>
 
-    <string name="A">Click on the button to sign in with facebook</string>
+    <string name="A">Login using your Facebbok or Google Account</string>
+    <string name="About">Name: Mridul Tripathi
+    Ashish Tripathi</string>
+    <string name="AboutMail">Email: mridultripathi14@gamil.com
+    ashishjnv0662@gmail.com</string>
+    <string name="AboutPhone">Mobile: +91 9532747964
+    +91 7081731360</string>
     <string name="title_activity_preferences">PreferencesActivity</string>
     <string name="title_activity_next">NextActivity</string>
     <string name="title_home">Home</string>
