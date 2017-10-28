@@ -24,10 +24,6 @@ import trainedge.demotraining.model.Data;
 
 import static android.content.Context.MODE_PRIVATE;
 
-/**
- * Created by dell on 19-08-2017.
- */
-
 public class DataAdapter extends RecyclerView.Adapter<DataHolder> {
 
     private PreferencesActivity activity;

@@ -23,10 +23,6 @@ import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.holder.ContactsHolder;
 import trainedge.demotraining.model.User;
 
-/**
- * Created by dell on 09-10-2017.
- */
-
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
    public static final String id_key="trainedge.demotraining";

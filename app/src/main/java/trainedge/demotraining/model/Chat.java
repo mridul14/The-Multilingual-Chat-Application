@@ -1,9 +1,5 @@
 package trainedge.demotraining.model;
 
-/**
- * Created by dell on 27-08-2017.
- */
-
 public class Chat {
     public String sender;
     public String receiver;

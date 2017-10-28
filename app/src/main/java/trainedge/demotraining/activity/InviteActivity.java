@@ -108,7 +108,6 @@ public class InviteActivity extends AppCompatActivity implements GoogleApiClient
                 Intent intent1=new Intent(InviteActivity.this,AboutActivity.class);
                 startActivity(intent1);
                 break;
-
         }
 
     }

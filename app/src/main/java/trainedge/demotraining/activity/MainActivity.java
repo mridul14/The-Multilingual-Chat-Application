@@ -53,18 +53,6 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     private SignInButton btn;
     private DatabaseReference db;
 
-    //SignInButton btn= (SignInButton) findViewById(R.id.loginGoogle);
-
-
-
-
-
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuth.addAuthStateListener(mAuthListener);
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

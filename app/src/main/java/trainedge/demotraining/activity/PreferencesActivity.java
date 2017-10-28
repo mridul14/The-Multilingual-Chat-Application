@@ -20,8 +20,6 @@ import trainedge.demotraining.model.Data;
 public class PreferencesActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    //private SharedPreferences lang_pref;
-    //private DatabaseReference db;
     private RecyclerView rvLanguages;
 
     private ArrayList<Data> dataItems,actualData;

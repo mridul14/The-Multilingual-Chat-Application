@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-/**
- * Created by dell on 17-08-2017.
- */
+
 
 public class BasicActivity extends AppCompatActivity {
     public static final String PACKAGE_NAME="trainedge.demotraining";

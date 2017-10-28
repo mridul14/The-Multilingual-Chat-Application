@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import trainedge.demotraining.R;
 
-/**
- * Created by dell on 09-10-2017.
- */
 
 public class ContactsHolder extends RecyclerView.ViewHolder {
 

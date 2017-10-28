@@ -1,8 +1,5 @@
 package trainedge.demotraining.model;
 
-/**
- * Created by dell on 26-10-2017.
- */
 
 public class MessgaeList {
     public String receiverId;

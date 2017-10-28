@@ -1,8 +1,5 @@
 package trainedge.demotraining.model;
 
-/**
- * Created by dell on 09-10-2017.
- */
 
 public class ContactsModel {
     public ContactsModel() {

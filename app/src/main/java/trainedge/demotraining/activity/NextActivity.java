@@ -24,30 +24,6 @@ import trainedge.demotraining.fragment.InviteFragment;
 public class NextActivity extends BasicActivity {
 
 
-  /*  private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_add_contact:
-                    Intent contactsintent=new Intent(NextActivity.this,AddContactsActivity.class);
-                    startActivity(contactsintent);
-                    return true;
-                case R.id.navigation_chat:
-                    Intent chatsintent=new Intent(NextActivity.this,ChatActivity.class);
-                    startActivity(chatsintent);
-                    return true;
-                case R.id.navigation_invite:
-                    Intent invitesintent=new Intent(NextActivity.this,InviteActivity.class);
-                    startActivity(invitesintent);
-                    return true;
-            }
-            return false;
-        }
-
-    };*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

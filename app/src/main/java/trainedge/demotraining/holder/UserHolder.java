@@ -9,10 +9,6 @@ import android.widget.TextView;
 
 import trainedge.demotraining.R;
 
-/**
- * Created by dell on 31-08-2017.
- */
-
 public class UserHolder extends RecyclerView.ViewHolder {
 
 

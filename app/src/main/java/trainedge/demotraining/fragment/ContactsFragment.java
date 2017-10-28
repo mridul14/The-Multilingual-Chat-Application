@@ -30,11 +30,6 @@ import trainedge.demotraining.adapter.ContactsAdapter;
 import trainedge.demotraining.model.ContactsModel;
 import trainedge.demotraining.model.User;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ContactsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ContactsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

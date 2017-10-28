@@ -27,7 +27,6 @@ import trainedge.demotraining.model.User;
 
 public class AddContactsActivity extends BasicActivity {
 
-
     private RecyclerView rvUser;
     private EditText etSearchTerm;
     private String searchTerm;

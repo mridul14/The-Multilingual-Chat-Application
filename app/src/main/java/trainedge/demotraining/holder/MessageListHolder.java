@@ -4,12 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import trainedge.demotraining.R;
 
-/**
- * Created by dell on 26-10-2017.
- */
 
 public class MessageListHolder extends RecyclerView.ViewHolder {
 

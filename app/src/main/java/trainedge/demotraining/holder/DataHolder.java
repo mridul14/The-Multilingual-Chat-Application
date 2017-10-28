@@ -7,10 +7,6 @@ import android.widget.TextView;
 
 import trainedge.demotraining.R;
 
-/**
- * Created by dell on 19-08-2017.
- */
-
 public class DataHolder extends RecyclerView.ViewHolder {
 
    public final TextView tvLanguages;

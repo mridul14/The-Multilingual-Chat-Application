@@ -30,13 +30,6 @@ import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.adapter.UserAdapter;
 import trainedge.demotraining.model.User;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link AddContactFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddContactFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

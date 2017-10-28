@@ -21,7 +21,6 @@ import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.holder.UserHolder;
 import trainedge.demotraining.model.User;
 
-
 public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
     NextActivity context;
