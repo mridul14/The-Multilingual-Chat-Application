@@ -41,14 +41,10 @@ public class AddContactsActivity extends BasicActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final List<User> userData = new ArrayList<>();
         rvUser = (RecyclerView) findViewById(R.id.rvUser);
         etSearchTerm = (EditText) findViewById(R.id.etSearchTerm);
-
-
         ImageView ivSearch = (ImageView) findViewById(R.id.ivSearch);
-        final List<User> userData = new ArrayList<>();
-       // final UserAdapter uAdapter = new UserAdapter(userData, this);
-      //  rvUser.setAdapter(uAdapter);
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);

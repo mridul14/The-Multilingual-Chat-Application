@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,43 +33,31 @@ import trainedge.demotraining.model.MessgaeList;
 
 public class ChatActivity extends AppCompatActivity {
 
-    String id_key = "trainedge.demotraining";
     private FirebaseUser currentuser;
     private String senderId;
     String senderEmail;
     String receiverId;
     String receiverEmail;
     String receiver_lang;
-    private String concatEmail;
     private EditText et_chatbox;
-    private Button btn_chatbox_send;
+    private Button btn;
     private long time;
     private String content;
-    private String lang1;
     private SharedPreferences lang_pref;
     private String sender_lang;
     private String conv_key;
     private RecyclerView rv_message_list;
+    private List<MessgaeList> chatList;
+    private MessageListAdapter mAdapter;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        et_chatbox = (EditText) findViewById(R.id.et_chatbox);
-        btn_chatbox_send = (Button) findViewById(R.id.btn_chatbox_send);
-        time = System.currentTimeMillis();
-        final List<MessgaeList> chatList=new ArrayList<>();
-        rv_message_list = (RecyclerView) findViewById(R.id.rv_message_list);
-        rv_message_list.setLayoutManager(new LinearLayoutManager(this));
-        final MessageListAdapter mAdapter=new MessageListAdapter(this,chatList);
-        rv_message_list.setAdapter(mAdapter);
-        currentuser = FirebaseAuth.getInstance().getCurrentUser();
-        senderId=currentuser.getUid();
-        senderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             receiverId = getIntent().getStringExtra("id");
@@ -76,12 +65,33 @@ public class ChatActivity extends AppCompatActivity {
             receiver_lang = getIntent().getStringExtra("lang");
             conv_key = getIntent().getStringExtra("conv_key");
         }
+
+        et_chatbox = (EditText) findViewById(R.id.et_chatbox);
+        btn= (Button) findViewById(R.id.btn_chatbox_send);
+
+        chatList = new ArrayList<>();
+        currentuser = FirebaseAuth.getInstance().getCurrentUser();
+
         lang_pref = getSharedPreferences("lang_pref", MODE_PRIVATE);
+
+        final DatabaseReference myContactsDb = FirebaseDatabase.getInstance().getReference("messages").child(conv_key);
+
+        senderId=currentuser.getUid();
+        senderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         sender_lang = lang_pref.getString("lang_key", "");
-        final DatabaseReference myContactsDb = FirebaseDatabase.getInstance().getReference("messages");
+
+        mAdapter = new MessageListAdapter(this, chatList);
+
+        rv_message_list = (RecyclerView) findViewById(R.id.rv_message_list);
+        rv_message_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_message_list.setAdapter(mAdapter);
+
+        time = Calendar.getInstance().getTime().getTime();
+
         myContactsDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                chatList.clear();
                 if (dataSnapshot.getChildrenCount()>0){
                     for (DataSnapshot snapshot:dataSnapshot.getChildren()){
                         chatList.add(snapshot.getValue(MessgaeList.class));
@@ -95,11 +105,18 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-        btn_chatbox_send.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                content = et_chatbox.getText().toString().trim();
-                HashMap<String, Object> msgHashMap = new HashMap<>();
+                content = et_chatbox.getText().toString();
+                if (content.isEmpty()){
+                    Toast.makeText(ChatActivity.this, "Write some message", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                MessgaeList msgTobeSent=new MessgaeList(receiverId,senderId,time,content,receiver_lang,sender_lang);
+                myContactsDb.push().setValue(msgTobeSent);
+                et_chatbox.setText("");
+                /*HashMap<String, Object> msgHashMap = new HashMap<>();
                 msgHashMap.put("senderId", senderId);
                 msgHashMap.put("receiverId", receiverId);
                 msgHashMap.put("time", time);
@@ -118,18 +135,8 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 });
-
+*/
             }
         });
     }
-
-    private String concatEmails(String senderEmail, String receiverEmail) {
-        String temp = senderEmail + receiverEmail;
-        temp = temp.replace(".", "_");
-        temp = temp.replace("@", "__");
-        return temp;
-
-    }
-
-
 }

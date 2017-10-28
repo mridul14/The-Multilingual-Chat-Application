@@ -25,10 +25,9 @@ import trainedge.demotraining.model.User;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
-   public static final String id_key="trainedge.demotraining";
     List<User> list;
     NextActivity context;
-    private boolean keysLoaded=false;
+    boolean keysLoaded=false;
 
     public ContactsAdapter(List<User> list, NextActivity context) {
         this.list=list;
@@ -38,7 +37,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
     @Override
     public ContactsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.simple_card_item_3, parent, false);
-
         return new ContactsHolder(v);
     }
 

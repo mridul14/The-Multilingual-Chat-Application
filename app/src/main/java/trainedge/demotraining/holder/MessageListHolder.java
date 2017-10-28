@@ -17,7 +17,7 @@ public class MessageListHolder extends RecyclerView.ViewHolder {
     public MessageListHolder(View itemView) {
         super(itemView);
 
-        image_message_profile = itemView.findViewById(R.id.text_message_name);
+        image_message_profile = itemView.findViewById(R.id.image_message_profile);
         text_message_name = itemView.findViewById(R.id.text_message_name);
         text_message_body = itemView.findViewById(R.id.text_message_body);
         text_message_time = itemView.findViewById(R.id.text_message_time);

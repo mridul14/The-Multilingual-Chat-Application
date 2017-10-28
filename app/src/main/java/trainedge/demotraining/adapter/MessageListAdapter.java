@@ -34,12 +34,15 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListHolder> 
     @Override
     public void onBindViewHolder(MessageListHolder holder, int position) {
         MessgaeList messgaeList=chatList.get(position);
-
+        holder.text_message_body.setText(messgaeList.content);
+        holder.text_message_time.setText(String.valueOf(messgaeList.time));
+        holder.image_message_profile.setVisibility(View.GONE);
+        holder.text_message_name.setVisibility(View.GONE);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return chatList.size();
 
     }
 }

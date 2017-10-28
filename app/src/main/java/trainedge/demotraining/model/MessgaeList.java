@@ -4,7 +4,7 @@ package trainedge.demotraining.model;
 public class MessgaeList {
     public String receiverId;
     public String senderId;
-    public String time;
+    public Long time;
     public String content;
     public String receiverlang;
     public String senderlang;
@@ -13,7 +13,7 @@ public class MessgaeList {
     public MessgaeList() {
     }
 
-    public MessgaeList(String receiverId, String senderId, String time, String content, String receiverlang, String senderlang) {
+    public MessgaeList(String receiverId, String senderId, Long time, String content, String receiverlang, String senderlang) {
 
         this.receiverId = receiverId;
         this.senderId = senderId;
@@ -22,6 +22,4 @@ public class MessgaeList {
         this.receiverlang = receiverlang;
         this.senderlang = senderlang;
     }
-
-
-  }
+}
