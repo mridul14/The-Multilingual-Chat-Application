@@ -21,11 +21,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
+import trainedge.demotraining.HideShowScrollListener;
 import trainedge.demotraining.R;
 import trainedge.demotraining.adapter.ContactsAdapter;
 import trainedge.demotraining.adapter.MessageListAdapter;
@@ -88,6 +92,7 @@ public class ChatActivity extends AppCompatActivity {
 
         time = Calendar.getInstance().getTime().getTime();
 
+
         myContactsDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,6 +113,8 @@ public class ChatActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rv_message_list.smoothScrollToPosition(rv_message_list.getAdapter().getItemCount());
+
                 content = et_chatbox.getText().toString();
                 if (content.isEmpty()){
                     Toast.makeText(ChatActivity.this, "Write some message", Toast.LENGTH_SHORT).show();
@@ -138,5 +145,36 @@ public class ChatActivity extends AppCompatActivity {
 */
             }
         });
+        rv_message_list.addOnScrollListener(
+                new HideShowScrollListener() {
+                    @Override
+                    public void onHide() {
+                        //btn.hide();
+                    }
+
+                    @Override
+                    public void onShow() {
+                       // fab.show();
+                    }
+                });
+    }
+
+    private void setupRecylerView() {
+        rv_message_list.setHasFixedSize(true);
+        rv_message_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_message_list.setAdapter(mAdapter);
+    }
+    public  String getDateCurrentTimeZone(long timestamp) {
+        try{
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        }catch (Exception e) {
+        }
+        return "";
     }
 }

@@ -1,9 +1,11 @@
 package trainedge.demotraining.adapter;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListHolder> 
         holder.text_message_time.setText(String.valueOf(messgaeList.time));
         holder.image_message_profile.setVisibility(View.GONE);
         holder.text_message_name.setVisibility(View.GONE);
+
     }
 
     @Override

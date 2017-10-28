@@ -112,4 +112,5 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
     public int getItemCount() {
         return list.size();
     }
+
 }
