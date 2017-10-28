@@ -34,6 +34,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListHolder> 
     @Override
     public void onBindViewHolder(MessageListHolder holder, int position) {
         MessgaeList messgaeList=chatList.get(position);
+
     }
 
     @Override
