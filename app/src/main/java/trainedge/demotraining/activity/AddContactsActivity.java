@@ -32,6 +32,7 @@ public class AddContactsActivity extends BasicActivity {
     private String searchTerm;
     private FirebaseUser currentUser;
     private boolean isLoaded = false;
+    private ImageView ivSearch;
 
 
     @Override
@@ -44,7 +45,7 @@ public class AddContactsActivity extends BasicActivity {
         final List<User> userData = new ArrayList<>();
         rvUser = (RecyclerView) findViewById(R.id.rvUser);
         etSearchTerm = (EditText) findViewById(R.id.etSearchTerm);
-        ImageView ivSearch = (ImageView) findViewById(R.id.ivSearch);
+        ivSearch = (ImageView) findViewById(R.id.ivSearch);
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);

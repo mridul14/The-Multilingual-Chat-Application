@@ -84,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
         senderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         sender_lang = lang_pref.getString("lang_key", "");
 
-        mAdapter = new MessageListAdapter(this, chatList);
+        mAdapter = new MessageListAdapter(this,chatList);
 
         rv_message_list = (RecyclerView) findViewById(R.id.rv_message_list);
         rv_message_list.setLayoutManager(new LinearLayoutManager(this));
@@ -113,7 +113,7 @@ public class ChatActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rv_message_list.smoothScrollToPosition(rv_message_list.getAdapter().getItemCount());
+                //rv_message_list.smoothScrollToPosition(rv_message_list.getAdapter().getItemCount());
 
                 content = et_chatbox.getText().toString();
                 if (content.isEmpty()){
@@ -145,7 +145,7 @@ public class ChatActivity extends AppCompatActivity {
 */
             }
         });
-        rv_message_list.addOnScrollListener(
+       /* rv_message_list.addOnScrollListener(
                 new HideShowScrollListener() {
                     @Override
                     public void onHide() {
@@ -156,10 +156,10 @@ public class ChatActivity extends AppCompatActivity {
                     public void onShow() {
                        // fab.show();
                     }
-                });
+                });*/
     }
 
-    private void setupRecylerView() {
+   /* private void setupRecylerView() {
         rv_message_list.setHasFixedSize(true);
         rv_message_list.setLayoutManager(new LinearLayoutManager(this));
         rv_message_list.setAdapter(mAdapter);
@@ -176,5 +176,5 @@ public class ChatActivity extends AppCompatActivity {
         }catch (Exception e) {
         }
         return "";
-    }
+    }*/
 }
