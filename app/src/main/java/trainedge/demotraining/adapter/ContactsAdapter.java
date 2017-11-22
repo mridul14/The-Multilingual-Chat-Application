@@ -45,7 +45,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
         final User data = list.get(position);
         holder.tvUser.setText(data.name);
         holder.tvUserMail.setText(data.email);
-        Glide.with(context).load(data.photo).into(holder.ivPhoto);
+        Glide.with(context).load(data. photo).into(holder.ivPhoto);
 
         holder.container1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
         final String testNode1=concatEmails(senderEmail,recieverEmail);
         final String testNode2=concatEmails(recieverEmail,senderEmail);
 
-        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("messages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String key = null;

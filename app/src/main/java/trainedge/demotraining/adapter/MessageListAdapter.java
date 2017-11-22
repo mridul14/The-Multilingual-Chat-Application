@@ -1,45 +1,76 @@
 package trainedge.demotraining.adapter;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
+import android.text.format.DateFormat;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import trainedge.demotraining.R;
 import trainedge.demotraining.activity.ChatActivity;
-import trainedge.demotraining.holder.MessageListHolder;
-import trainedge.demotraining.model.MessgaeList;
+import trainedge.demotraining.holder.ReceiverHolder;
+import trainedge.demotraining.holder.SenderHolder;
+import trainedge.demotraining.model.MessageList;
 
 
-public class MessageListAdapter extends RecyclerView.Adapter<MessageListHolder> {
+public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final List<MessgaeList> chatList;
+    private final List<MessageList> chatList;
     private final ChatActivity chatActivity;
+    public int SENDER=0;
+    public int RECEIVER=1;
+    private final FirebaseUser user;
 
-    public MessageListAdapter(ChatActivity chatActivity, List<MessgaeList> chatList) {
+    public MessageListAdapter(ChatActivity chatActivity, List<MessageList> chatList) {
 
         this.chatList = chatList;
         this.chatActivity = chatActivity;
+        user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @Override
-    public MessageListHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.receiver_chat_item,parent,false);
-        return new MessageListHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View vReceive = LayoutInflater.from(parent.getContext()).inflate(R.layout.receiver_chat_item, parent, false);
+        View vSend = LayoutInflater.from(parent.getContext()).inflate(R.layout.sender_chat_item, parent, false);
+        if (viewType == SENDER) {
+            return new SenderHolder(vSend);
+        }
+        return new ReceiverHolder(vReceive);
     }
 
     @Override
-    public void onBindViewHolder(MessageListHolder holder, int position) {
-        MessgaeList messgaeList=chatList.get(position);
-        holder.text_message_body.setText(messgaeList.content);
-        holder.text_message_time.setText(String.valueOf(messgaeList.time));
-        holder.image_message_profile.setVisibility(View.GONE);
-        holder.text_message_name.setVisibility(View.GONE);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof SenderHolder){
+            SenderHolder sh= (SenderHolder) holder;
+            MessageList messageList = chatList.get(position);
+            sh.text_message_body.setText(messageList.content);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(messageList.Time);
+            String date = DateFormat.format("hh:mm", cal).toString();
+            sh.text_message_time.setText(date);
+
+        }else {
+            ReceiverHolder rh= (ReceiverHolder) holder;
+            MessageList messageList = chatList.get(position);
+            rh.text_message_body.setText(messageList.content);
+            rh.text_message_name.setText("");
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(messageList.Time * 1000L);
+            String date = DateFormat.format("dd hh:mm:ss", cal).toString();
+            rh.text_message_time.setText(date);
+
+            Glide.with(chatActivity).load(R.drawable.ic_person_outline_black_24dp).into(rh.image_message_profile);
+
+        }
 
     }
 
@@ -47,5 +78,13 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListHolder> 
     public int getItemCount() {
         return chatList.size();
 
+    }
+    @Override
+    public int getItemViewType(int position) {
+        MessageList msgList = chatList.get(position);
+        if (msgList.senderId.equals(user.getUid())) {
+            return SENDER;
+        }
+        return RECEIVER;
     }
 }

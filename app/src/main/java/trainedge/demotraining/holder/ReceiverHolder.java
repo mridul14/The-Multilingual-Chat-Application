@@ -7,14 +7,14 @@ import android.widget.TextView;
 import trainedge.demotraining.R;
 
 
-public class MessageListHolder extends RecyclerView.ViewHolder {
+public class ReceiverHolder extends RecyclerView.ViewHolder {
 
     public ImageView image_message_profile;
     public TextView text_message_name;
     public TextView text_message_body;
     public TextView text_message_time;
 
-    public MessageListHolder(View itemView) {
+    public ReceiverHolder(View itemView) {
         super(itemView);
 
         image_message_profile = itemView.findViewById(R.id.image_message_profile);

@@ -106,7 +106,7 @@ public class AddContactFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 loadMyContacts.clear();
-                if (dataSnapshot.getChildrenCount() >= 0) {
+                if (dataSnapshot.getChildrenCount() >0) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         loadMyContacts.add(snapshot.getKey());
 
