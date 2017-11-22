@@ -62,6 +62,9 @@ dependencies {
     compile 'devlight.io:navigationtabbar:1.2.5'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+
 }
 configurations.all {
     resolutionStrategy.eachDependency {
