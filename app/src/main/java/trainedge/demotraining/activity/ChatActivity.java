@@ -1,6 +1,7 @@
 package trainedge.demotraining.activity;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         et_chatbox = (EditText) findViewById(R.id.et_chatbox);
-        btn= (Button) findViewById(R.id.btn_chatbox_send);
+        btn = (Button) findViewById(R.id.btn_chatbox_send);
 
         chatList = new ArrayList<>();
         currentuser = FirebaseAuth.getInstance().getCurrentUser();
@@ -80,34 +81,37 @@ public class ChatActivity extends AppCompatActivity {
 
         final DatabaseReference myContactsDb = FirebaseDatabase.getInstance().getReference("messages").child(conv_key);
 
-        senderId=currentuser.getUid();
+        senderId = currentuser.getUid();
         senderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         sender_lang = lang_pref.getString("lang_key", "");
 
-        HashMap<String,String> map= new HashMap<>();
-        map.put("person1",senderId);
-        map.put("person2",receiverId);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("person1", senderId);
+        map.put("person2", receiverId);
         myContactsDb.setValue(map);
 
-        mAdapter = new MessageListAdapter(this,chatList);
+        mAdapter = new MessageListAdapter(this, chatList);
 
         rv_message_list = (RecyclerView) findViewById(R.id.rv_message_list);
         rv_message_list.setLayoutManager(new LinearLayoutManager(this));
         rv_message_list.setAdapter(mAdapter);
 
 
-
         myContactsDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 chatList.clear();
-                if (dataSnapshot.getChildrenCount()>0){
-                    for (DataSnapshot snapshot:dataSnapshot.getChildren()){
-                        chatList.add(snapshot.getValue(MessageList.class));
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.getKey().equals("person1") || snapshot.getKey().equals("person2")) {
+                            continue;
+                        } else {
+                            chatList.add(snapshot.getValue(MessageList.class));
+                        }
                     }
-                        mAdapter.notifyDataSetChanged();
-                        int size=chatList.size();
-                        rv_message_list.smoothScrollToPosition(size-1);
+                    mAdapter.notifyDataSetChanged();
+                    int size = chatList.size();
+                    //rv_message_list.smoothScrollToPosition(size - 1);
                 }
             }
 
@@ -127,11 +131,11 @@ public class ChatActivity extends AppCompatActivity {
 
                 content = et_chatbox.getText().toString();
 
-                if (content.isEmpty()){
+                if (content.isEmpty()) {
                     Toast.makeText(ChatActivity.this, "Write some message", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                MessageList msgTobeSent=new MessageList(receiverId,senderId,Time,content,receiver_lang,sender_lang);
+                MessageList msgTobeSent = new MessageList(receiverId, senderId, Time, content, receiver_lang, sender_lang);
                 myContactsDb.push().setValue(msgTobeSent);
                 et_chatbox.setText("");
 
@@ -139,13 +143,16 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
+    }
 
-}
+    /**
+     * Translate a given text between a source and a destination language
+     */
+    public String translate(String text, String firstLang, String secondLang) {
 
-    /** Translate a given text between a source and a destination language */
-    public String translate(String text,String firstLang,String secondLang) {
-        String translated="";
-        String url = String.format("http://mymemory.translated.net/api/get?q=%s!&langpair=%s|%s", text, firstLang, secondLang);
+
+        String translated = "";
+        String url = String.format("http://mymemory.translated.net/api/get?q=%s!&langpair=%s|%s&key=%s", text, firstLang, secondLang, getResources().getString(R.string.translation_key));
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -167,6 +174,14 @@ public class ChatActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return translated;
+    }
+    class Translation extends AsyncTask<Object,Void,Void>{
+        @Override
+        protected Void doInBackground(Object... objects) {
+
+
+            return null;
+        }
     }
 }
 

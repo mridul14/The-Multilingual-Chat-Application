@@ -70,60 +70,75 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
     private void dataGenerator() {
 
-        dataItems=new ArrayList<>();
-        actualData=new ArrayList<>();
+        dataItems = new ArrayList<>();
+        actualData = new ArrayList<>();
         dataItems.add(new Data("English"));
-        actualData.add(new Data("English"));
-        dataItems.add(new Data("हिंदी Hindi"));
-        actualData.add(new Data("hindi"));
-        dataItems.add(new Data("தமிழ் Tamil"));
-        actualData.add(new Data("tamil"));
-        dataItems.add(new Data("తెలుగు Telugu"));
-        actualData.add(new Data("telugu"));
-        dataItems.add(new Data("ગુજરાત Gujrati"));
-        actualData.add(new Data("gujrati"));
-        dataItems.add(new Data("मराठी Marathi"));
-        actualData.add(new Data("marathi"));
-        dataItems.add(new Data("français French"));
-        actualData.add(new Data("french"));
-        dataItems.add(new Data("Deutsche German"));
-        actualData.add(new Data("german"));
-        dataItems.add(new Data("Español Spanish"));
-        actualData.add(new Data("spanish"));
-        dataItems.add(new Data("italiano Italian"));
-        actualData.add(new Data("italian"));
+        actualData.add(new Data("en"));
+        dataItems.add(new Data("Hindi"));
+        actualData.add(new Data("hi"));
+        dataItems.add(new Data("Arabic"));
+        actualData.add(new Data("ar"));
+        dataItems.add(new Data("Armenian"));
+        actualData.add(new Data("hy"));
+        dataItems.add(new Data("Albanian"));
+        actualData.add(new Data("sq"));
+        dataItems.add(new Data("Azerbaijan"));
+        actualData.add(new Data("az"));
+        dataItems.add(new Data("Afrikaans"));
+        actualData.add(new Data("af"));
+        dataItems.add(new Data("Basque"));
+        actualData.add(new Data("eu"));
+        dataItems.add(new Data("Belarusian"));
+        actualData.add(new Data("be"));
+        dataItems.add(new Data("Bulgarian"));
+        actualData.add(new Data("bg"));
+        dataItems.add(new Data("Welsh"));
+        actualData.add(new Data("cy"));
+        dataItems.add(new Data("Vietnamese"));
+        actualData.add(new Data("vi"));
+        dataItems.add(new Data("Hungarian"));
+        actualData.add(new Data("hu"));
+        dataItems.add(new Data("Haitian (Creole)"));
+        actualData.add(new Data("ht"));
+        dataItems.add(new Data("Galician"));
+        actualData.add(new Data("gl"));
+        dataItems.add(new Data("Dutch"));
+        actualData.add(new Data("nl"));
+        dataItems.add(new Data("Greek"));
+        actualData.add(new Data("el"));
+        dataItems.add(new Data("Georgian"));
+        actualData.add(new Data("ka"));
+        dataItems.add(new Data("Danish"));
+        actualData.add(new Data("da"));
+        dataItems.add(new Data("Yiddish"));
+        actualData.add(new Data("he"));
+        dataItems.add(new Data("Indonesian"));
+        actualData.add(new Data("id"));
+        dataItems.add(new Data("Irish"));
+        actualData.add(new Data("ga"));
+        dataItems.add(new Data("Italian"));
+        actualData.add(new Data("it"));
+        dataItems.add(new Data("Icelandic"));
+        actualData.add(new Data("is"));
+        dataItems.add(new Data("Spanish"));
+        actualData.add(new Data("es"));
+        dataItems.add(new Data("Chinese"));
+        actualData.add(new Data("zh"));
+        dataItems.add(new Data("Korean"));
+        actualData.add(new Data("ko"));
+        dataItems.add(new Data("Latin"));
+        actualData.add(new Data("la"));
+        dataItems.add(new Data("German"));
+        actualData.add(new Data("de"));
+        dataItems.add(new Data("Polish"));
+        actualData.add(new Data("pl"));
 
 
     }
-
-   /* private void addToFirebase(String lang_name) {
-
-        FirebaseUser currentuser= FirebaseAuth.getInstance().getCurrentUser();
-
-
-        db.child(currentuser.getUid()).setValue(lang_name, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-
-
-                if(databaseError==null){
-                    Toast.makeText(PreferencesActivity.this,"Success",Toast.LENGTH_SHORT).show();
-
-                }
-                else {
-
-                    Toast.makeText(PreferencesActivity.this,databaseError.getMessage(),Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-
-    }*/
-
 
     @Override
     public void onClick(View view) {
 
     }
 }
+
