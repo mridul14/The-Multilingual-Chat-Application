@@ -26,8 +26,7 @@ import java.util.List;
 
 import trainedge.demotraining.R;
 import trainedge.demotraining.activity.NextActivity;
-import trainedge.demotraining.adapter.ContactsAdapter;
-import trainedge.demotraining.model.ContactsModel;
+import trainedge.demotraining.adapter.UserAdapter;
 import trainedge.demotraining.model.User;
 
 public class ContactsFragment extends Fragment {
@@ -43,7 +42,7 @@ public class ContactsFragment extends Fragment {
     private ImageView ivSearch;
     private List<User> data;
     private boolean isLoaded=false;
-    private ContactsAdapter cAdapter;
+    private UserAdapter sAdapter;
 
 
     public ContactsFragment() {
@@ -77,34 +76,33 @@ public class ContactsFragment extends Fragment {
         rvUser = view.findViewById(R.id.rvUser);
         etSearchTerm =view.findViewById(R.id.etSearchTerm);
         ivSearch = view.findViewById(R.id.ivSearch);
-        final List<User> myContacts=new ArrayList<>();
+        /*final List<User> myContacts=new ArrayList<>();
         final List<User> contacts=new ArrayList<>();
-        final List<String> frdId=new ArrayList<>();
-        cAdapter = new ContactsAdapter(myContacts,(NextActivity)getActivity());
-
-        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final List<String> frdId=new ArrayList<>();*/
+        sAdapter = new UserAdapter(data,(NextActivity)getActivity());
+        rvUser.setAdapter(sAdapter);
         rvUser.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
         itemAnimator.setRemoveDuration(1000);
         rvUser.setItemAnimator(itemAnimator);
-        rvUser.setAdapter(cAdapter);
-
-
-        final DatabaseReference allDb = FirebaseDatabase.getInstance().getReference("Users");
+        final List<String> loadMyContacts=new ArrayList<>();
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference userDb = FirebaseDatabase.getInstance().getReference("Users");
         DatabaseReference myContactsDb = FirebaseDatabase.getInstance().getReference(currentUser.getUid()).child("Contacts");
         myContactsDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                myContacts.clear();
+                loadMyContacts.clear();
                 if (dataSnapshot.getChildrenCount() >0) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        frdId.add(snapshot.getKey());
+                        loadMyContacts.add(snapshot.getKey());
 
                     }
+                    Toast.makeText(getActivity() , "Data has been loaded", Toast.LENGTH_SHORT).show();
                 }
                 isLoaded = true;
-                findContact(allDb, myContacts, frdId);
+                //findContact(allDb, myContacts, frdId);
             }
 
             @Override
@@ -120,45 +118,85 @@ public class ContactsFragment extends Fragment {
             public void onClick(View view) {
                 final String searchTerm = etSearchTerm.getText().toString().trim();
 
-                findContact(allDb, myContacts, frdId);
+                if (isLoaded){
+                    Toast.makeText(getActivity(), "Finding....", Toast.LENGTH_SHORT).show();
+                    userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int pos=0;
+                            data.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                boolean isPresent=false;
+                                String email=snapshot.child("email").getValue(String.class);
+                                String name=snapshot.child("name").getValue(String.class);
+                                String photo=snapshot.child("photo").getValue(String.class);
+                                String lang=snapshot.child("language").getValue(String.class);
+                                String id=snapshot.getKey();
+                                for (int i=0; i<loadMyContacts.size();i++){
+                                    if (loadMyContacts.get(i).equals(id)){
+                                        isPresent=true;
+                                    }
+                                }
+                                if (email != null && email.contains(searchTerm) && !email.equals(currentUser.getEmail()) && !isPresent){
+                                    //add to array list
+                                    sAdapter.insert(pos, new User(name,email,id,photo,lang));
+                                }
+                                pos++;
+                            }
+                            if (data.size()==0){
+                                data.clear();
+                                sAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                    else {
+                    Toast.makeText(getActivity(), "could not find data", Toast.LENGTH_SHORT).show();
+                }
+               // findContact(allDb, myContacts, frdId);
             }
         });
         return view;
     }
 
-    private void findContact(DatabaseReference allDb, final List<User> myContacts, final List<String> frdId) {
-        if (isLoaded) {
-            Toast.makeText(getActivity(), "Finding...", Toast.LENGTH_SHORT).show();
-            allDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    int pos = 0;
-                    myContacts.clear();
-                    if (dataSnapshot.hasChildren()){
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            if (frdId.contains(snapshot.getKey())){
-                                myContacts.add(snapshot.getValue(User.class));
-                            }
-                        }
-
-                    }
-
-                    else {
-                        Toast.makeText(getActivity(), "could not find data", Toast.LENGTH_SHORT).show();
-                    }
-                    if (myContacts.size()>0){
-                        cAdapter.notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // hideProgressDialog();
-
-                }
-            });
-
-        }
-    }
+//    private void findContact(DatabaseReference allDb, final List<User> myContacts, final List<String> frdId) {
+//        if (isLoaded) {
+//            Toast.makeText(getActivity(), "Finding...", Toast.LENGTH_SHORT).show();
+//            allDb.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    int pos = 0;
+//                    myContacts.clear();
+//                    if (dataSnapshot.hasChildren()){
+//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+//                            if (frdId.contains(snapshot.getKey())){
+//                                myContacts.add(snapshot.getValue(User.class));
+//                            }
+//                        }
+//
+//                    }
+//
+//                    else {
+//                        Toast.makeText(getActivity(), "could not find data", Toast.LENGTH_SHORT).show();
+//                    }
+//                    if (myContacts.size()>0){
+//                        sAdapter.notifyDataSetChanged();
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // hideProgressDialog();
+//
+//                }
+//            });
+//
+//        }
+//    }
 
 }

@@ -3,6 +3,8 @@ package trainedge.demotraining.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +13,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import trainedge.demotraining.R;
+import trainedge.demotraining.activity.NextActivity;
+import trainedge.demotraining.adapter.ContactsAdapter;
+import trainedge.demotraining.model.ChatModel;
 import trainedge.demotraining.model.User;
 
 public class ChatFragment extends Fragment {
@@ -32,6 +42,13 @@ public class ChatFragment extends Fragment {
     private RecyclerView rv_chat;
     private ImageView iv;
     private TextView tv_name;
+    private List<ChatModel> chatName;
+    private FirebaseUser currentUser;
+    private ArrayList<String> chatKeys;
+    private ContactsAdapter chatAdapter;
+
+
+
 
 
     public ChatFragment() {
@@ -71,20 +88,69 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         rv_chat = view.findViewById(R.id.rv_chat);
+        chatName=new ArrayList<>();
+        setupChats(chatName);
+        currentUser= FirebaseAuth.getInstance().getCurrentUser();
+        final String emailPart=currentUser.getEmail().split("@")[0];
+        chatKeys=new ArrayList<String>();
+        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()){
+                    chatName.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        findContacts(snapshot);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         iv = view.findViewById(R.id.ivPhoto);
         tv_name = view.findViewById(R.id.tvUser);
 
         return view;
     }
-    public void findUserById(String uid, final TextView tv_name, final ImageView iv){
+
+    private void setupChats(List<ChatModel> chatName) {
+        chatAdapter = new ContactsAdapter(chatName,getActivity());
+        rv_chat.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(1000);
+        itemAnimator.setRemoveDuration(1000);
+        rv_chat.setItemAnimator(itemAnimator);
+        rv_chat.setAdapter(chatAdapter);
+    }
+
+    private void findContacts(DataSnapshot snapshot) {
+        String person1Id = snapshot.child("person1").getValue(String.class);
+        String person2Id = snapshot.child("person2").getValue(String.class);
+        if (!person1Id.equals(currentUser.getUid())) {
+            findUserById(person1Id,snapshot);
+        } else {
+            findUserById(person2Id,snapshot);
+        }
+    }
+
+
+    public void findUserById(final String uid, DataSnapshot snapshot){
+        final String chatKey=snapshot.getKey();
         DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
             if(dataSnapshot.hasChildren()){
-                User user = dataSnapshot.getValue(User.class);
-                tv_name.setText(user.name);
-                Glide.with(getActivity()).load(user.photo).into(iv);
+//                User user = dataSnapshot.getValue(User.class);
+//                tv_name.setText(user.name);
+//                Glide.with(getActivity()).load(user.photo).into(iv);
+                String name=dataSnapshot.child("name").getValue(String.class);
+                String photo=dataSnapshot.child("photo").getValue(String.class);
+
+                chatName.add(new ChatModel(uid,name,photo,chatKey));
+                chatAdapter.notifyDataSetChanged();
             }
             }
 

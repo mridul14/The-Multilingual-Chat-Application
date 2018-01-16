@@ -25,14 +25,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
     NextActivity context;
     private DatabaseReference ContactChoice;
-    List<User> userList;
+    List<User> list;
     private final FirebaseUser currentUser;
     private final DatabaseReference invitedUser;
 
 
-    public UserAdapter(List<User> userList, NextActivity context) {
+
+    public UserAdapter(List<User> list, NextActivity context) {
         this.context = context;
-        this.userList = userList;
+        this.list = list;
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         ContactChoice = FirebaseDatabase.getInstance().getReference(currentUser.getUid());
         invitedUser = ContactChoice.child("Contacts");
@@ -47,15 +48,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
     @Override
     public void onBindViewHolder(final UserHolder holder, final int position) {
-        final User user = userList.get(position);
-        holder.tvUser.setText(user.name);
-        holder.tvUserMail.setText(user.email);
-        Glide.with(context).load(user.photo).into(holder.ivPhoto);
+        final User data = list.get(position);
+        holder.tvUser.setText(data.name);
+        holder.tvUserMail.setText(data.email);
+        Glide.with(context).load(data.photo).into(holder.ivPhoto);
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 context.showProgressDialog("Adding....");
-                addToFirebase(user, holder.btnAdd);
+                addToFirebase(data, holder.btnAdd);
                 //view.setEnabled(false);
 
             }
@@ -78,17 +79,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
     }
 
 
-    public void remove(User data) {
-        int position = userList.indexOf(data);
-        userList.remove(position);
-        notifyItemRemoved(position);
-
-    }
-
-
     @Override
     public int getItemCount() {
-        return userList.size();
+        return list.size();
     }
 
     @Override
@@ -96,10 +89,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void insert(int pos, User user) {
+    public void insert(int position, User data) {
         // Insert a new item to the RecyclerView on a predefined position
-        userList.add(user);
-        notifyDataSetChanged();
+        list.add(data);
+        notifyItemInserted(position);
     }
+    public void remove(User data) {
+        int position = list.indexOf(data);
+        list.remove(position);
+        notifyItemRemoved(position);
+
+    }
+
+
+
 
 }

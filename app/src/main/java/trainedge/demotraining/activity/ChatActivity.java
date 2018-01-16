@@ -37,6 +37,8 @@ import trainedge.demotraining.R;
 import trainedge.demotraining.adapter.MessageListAdapter;
 import trainedge.demotraining.model.MessageList;
 
+import static android.R.id.message;
+
 public class ChatActivity extends AppCompatActivity {
 
     private FirebaseUser currentuser;
@@ -47,7 +49,6 @@ public class ChatActivity extends AppCompatActivity {
     String receiver_lang;
     private EditText et_chatbox;
     private Button btn;
-    private String content;
     private SharedPreferences lang_pref;
     private String sender_lang;
     private String conv_key;
@@ -55,6 +56,9 @@ public class ChatActivity extends AppCompatActivity {
     private List<MessageList> chatList;
     private MessageListAdapter mAdapter;
     public OkHttpClient client = new OkHttpClient();
+    private String recName;
+    private DatabaseReference myContactsDb;
+    private String url_format;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -69,6 +73,8 @@ public class ChatActivity extends AppCompatActivity {
             receiverEmail = getIntent().getStringExtra("email");
             receiver_lang = getIntent().getStringExtra("lang");
             conv_key = getIntent().getStringExtra("conv_key");
+            recName = getIntent().getStringExtra("name");
+            getSupportActionBar().setTitle(recName);
         }
 
         et_chatbox = (EditText) findViewById(R.id.et_chatbox);
@@ -79,16 +85,18 @@ public class ChatActivity extends AppCompatActivity {
 
         lang_pref = getSharedPreferences("lang_pref", MODE_PRIVATE);
 
-        final DatabaseReference myContactsDb = FirebaseDatabase.getInstance().getReference("messages").child(conv_key);
+        myContactsDb = FirebaseDatabase.getInstance().getReference("messages").child(conv_key);
 
         senderId = currentuser.getUid();
         senderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         sender_lang = lang_pref.getString("lang_key", "");
+        myContactsDb.child("person1").setValue(senderId);
+        myContactsDb.child("person2").setValue(receiverId);
 
-        HashMap<String, String> map = new HashMap<>();
+      /*  HashMap<String, String> map = new HashMap<>();
         map.put("person1", senderId);
         map.put("person2", receiverId);
-        myContactsDb.setValue(map);
+        myContactsDb.setValue(map);*/
 
         mAdapter = new MessageListAdapter(this, chatList);
 
@@ -98,9 +106,12 @@ public class ChatActivity extends AppCompatActivity {
 
 
         myContactsDb.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 chatList.clear();
+
                 if (dataSnapshot.getChildrenCount() > 0) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (snapshot.getKey().equals("person1") || snapshot.getKey().equals("person2")) {
@@ -129,7 +140,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 final long Time = Calendar.getInstance().getTime().getTime();
 
-                content = et_chatbox.getText().toString();
+                String content = et_chatbox.getText().toString();
 
                 if (content.isEmpty()) {
                     Toast.makeText(ChatActivity.this, "Write some message", Toast.LENGTH_SHORT).show();
@@ -148,11 +159,21 @@ public class ChatActivity extends AppCompatActivity {
     /**
      * Translate a given text between a source and a destination language
      */
-    public String translate(String text, String firstLang, String secondLang) {
+    public void translate(MessageList message) {
 
 
         String translated = "";
-        String url = String.format("http://mymemory.translated.net/api/get?q=%s!&langpair=%s|%s&key=%s", text, firstLang, secondLang, getResources().getString(R.string.translation_key));
+        String original=message.content;
+        String senderLang=message.senderlang;
+        String receiverLang=message.receiverlang;
+
+        url_format ="http://mymemory.translated.net/api/get?q=%s!&langpair=%s|%s&key=%s";
+        String url=String.format(url_format,
+                                original,
+                                senderLang,
+                                receiverLang,
+                                getResources().getString(R.string.translation_key));
+
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -167,19 +188,23 @@ public class ChatActivity extends AppCompatActivity {
             JSONObject jObject = null;
             jObject = new JSONObject(response.body().string());
             JSONObject data = jObject.getJSONObject("responseData");
+            translated=data.getString("translatedText");
+            message.setTranslated(translated);
+            myContactsDb.push().setValue(message);
             //result.setText(data.getString("translatedText"));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return translated;
     }
-    class Translation extends AsyncTask<Object,Void,Void>{
+    public class TranslationTask extends AsyncTask<MessageList,Void ,String>{
+
+
         @Override
-        protected Void doInBackground(Object... objects) {
-
-
+        protected String doInBackground(MessageList... objects) {
+            MessageList message=(MessageList)objects[0];
+            translate(message);
             return null;
         }
     }

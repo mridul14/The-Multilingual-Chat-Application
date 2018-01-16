@@ -73,11 +73,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             rh.text_message_body.setText(messageList.content);
             rh.text_message_name.setText("");
             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-            cal.setTimeInMillis(messageList.Time * 1000L);
-            String date = DateFormat.format("dd hh:mm:ss", cal).toString();
+            cal.setTimeInMillis(messageList.Time);
+            String date = DateFormat.format("hh:mm", cal).toString();
             rh.text_message_time.setText(date);
-            String translated = translate(rh.text_message_body, messageList.content, messageList.senderlang, messageList.receiverlang);
-
+            Object[] translationParams = new Object[]{rh.text_message_body, messageList.content, messageList.senderlang, messageList.receiverlang};
 
             Glide.with(chatActivity).load(R.drawable.ic_person_outline_black_24dp).into(rh.image_message_profile);
 
@@ -99,11 +98,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         return RECEIVER;
     }
+}
 
     /**
      * Translate a given text between a source and a destination language
      */
-    public String translate(TextView text_message_body, String text, String firstLang, String secondLang) {
+    /*public String translate(TextView text_message_body, String text, String firstLang, String secondLang) {
         String translated = "";
         String url = String.format("http://mymemory.translated.net/api/get?q=%s!&langpair=%s|%s&key=%s", text, firstLang, secondLang, chatActivity.getResources().getString(R.string.translation_key));
         Request request = new Request.Builder()
@@ -128,4 +128,4 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         return translated;
     }
-}
+}*/

@@ -8,10 +8,10 @@ public class MessageList {
     public String content;
     public String receiverlang;
     public String senderlang;
+    public String translated="";
 
 
-    public MessageList() {
-    }
+
 
     public MessageList(String receiverId, String senderId, Long Time, String content, String receiverlang, String senderlang) {
 
@@ -21,5 +21,10 @@ public class MessageList {
         this.content = content;
         this.receiverlang = receiverlang;
         this.senderlang = senderlang;
+    }
+
+
+    public void setTranslated(String translated) {
+        this.translated = translated;
     }
 }

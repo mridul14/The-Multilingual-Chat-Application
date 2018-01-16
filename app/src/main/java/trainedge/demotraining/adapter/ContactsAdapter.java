@@ -2,6 +2,8 @@ package trainedge.demotraining.adapter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +23,17 @@ import trainedge.demotraining.R;
 import trainedge.demotraining.activity.ChatActivity;
 import trainedge.demotraining.activity.NextActivity;
 import trainedge.demotraining.holder.ContactsHolder;
+import trainedge.demotraining.model.Chat;
+import trainedge.demotraining.model.ChatModel;
+import trainedge.demotraining.model.ContactsModel;
 import trainedge.demotraining.model.User;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
     List<User> list;
     NextActivity context;
-    boolean keysLoaded=false;
+    boolean keyLoaded=false;
+
 
     public ContactsAdapter(List<User> list, NextActivity context) {
         this.list=list;
@@ -42,7 +48,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
     @Override
     public void onBindViewHolder(ContactsHolder holder, int position) {
-        final User data = list.get(position);
+
+        final User data=list.get(position);
         holder.tvUser.setText(data.name);
         holder.tvUserMail.setText(data.email);
         Glide.with(context).load(data. photo).into(holder.ivPhoto);
@@ -55,6 +62,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
                 extras.putString("id",data.id);
                 extras.putString("email",data.email);
                 extras.putString("lang",data.language);
+                extras.putString("name",data.name);
                 intent.putExtras(extras);
                 ConverstationNodeKey(FirebaseAuth.getInstance().getCurrentUser().getEmail(),data.email,intent);
 
@@ -63,6 +71,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
         });
 
     }
+
+
 
     private void ConverstationNodeKey(String senderEmail, String recieverEmail, final Intent intent) {
         final String testNode1=concatEmails(senderEmail,recieverEmail);
@@ -88,7 +98,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
                 }
                 intent.putExtra("conv_key",key);
                 context.startActivity(intent);
-                keysLoaded =true;
+                keyLoaded =true;
             }
 
             @Override
@@ -113,4 +123,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
         return list.size();
     }
 
+    public  void insert(int position , User data){
+        list.add(data);
+        notifyItemInserted(position);
+    }
+    public void remove(ContactsModel data){
+        int position=list.indexOf(data);
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
 }
