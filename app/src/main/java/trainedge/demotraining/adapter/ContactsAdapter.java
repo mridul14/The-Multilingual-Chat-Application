@@ -30,12 +30,12 @@ import trainedge.demotraining.model.User;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
-    List<User> list;
-    NextActivity context;
+    List<ChatModel> list;
+    FragmentActivity context;
     boolean keyLoaded=false;
 
 
-    public ContactsAdapter(List<User> list, NextActivity context) {
+    public ContactsAdapter(List<ChatModel> list, FragmentActivity context) {
         this.list=list;
         this.context=context;
     }
