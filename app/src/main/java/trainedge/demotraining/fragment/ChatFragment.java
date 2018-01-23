@@ -26,6 +26,7 @@ import java.util.List;
 
 import trainedge.demotraining.R;
 import trainedge.demotraining.activity.NextActivity;
+import trainedge.demotraining.adapter.ChatAdapter;
 import trainedge.demotraining.adapter.ContactsAdapter;
 import trainedge.demotraining.model.ChatModel;
 import trainedge.demotraining.model.User;
@@ -41,11 +42,12 @@ public class ChatFragment extends Fragment {
     private String mParam2;
     private RecyclerView rv_chat;
     private ImageView iv;
+    private boolean isLoaded;
     private TextView tv_name;
     private List<ChatModel> chatName;
     private FirebaseUser currentUser;
     private ArrayList<String> chatKeys;
-    private ContactsAdapter chatAdapter;
+    private ChatAdapter chatAdapter;
 
 
 
@@ -116,7 +118,7 @@ public class ChatFragment extends Fragment {
     }
 
     private void setupChats(List<ChatModel> chatName) {
-        chatAdapter = new ContactsAdapter(chatName,getActivity());
+        chatAdapter = new ChatAdapter(chatName,getActivity());
         rv_chat.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);

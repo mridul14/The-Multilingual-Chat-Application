@@ -10,8 +10,8 @@ public class MessageList {
     public String senderlang;
     public String translated="";
 
-
-
+    public MessageList() {
+    }
 
     public MessageList(String receiverId, String senderId, Long Time, String content, String receiverlang, String senderlang) {
 

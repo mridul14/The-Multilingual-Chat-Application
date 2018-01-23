@@ -30,19 +30,19 @@ import trainedge.demotraining.model.User;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
-    List<ChatModel> list;
-    FragmentActivity context;
+    List<User> list;
+    NextActivity context;
     boolean keyLoaded=false;
 
 
-    public ContactsAdapter(List<ChatModel> list, FragmentActivity context) {
+    public ContactsAdapter(List<User> list, NextActivity context) {
         this.list=list;
         this.context=context;
     }
 
     @Override
     public ContactsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.simple_card_item_3, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.simple_card_item_2, parent, false);
         return new ContactsHolder(v);
     }
 
@@ -71,8 +71,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
         });
 
     }
-
-
 
     private void ConverstationNodeKey(String senderEmail, String recieverEmail, final Intent intent) {
         final String testNode1=concatEmails(senderEmail,recieverEmail);
@@ -117,11 +115,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsHolder> {
 
     }
 
-
     @Override
     public int getItemCount() {
         return list.size();
     }
+
 
     public  void insert(int position , User data){
         list.add(data);
