@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -69,6 +70,7 @@ public class BasicActivity extends AppCompatActivity {
 
         Log.d(" trainedge.training",data);
     }
+
 }
 
 

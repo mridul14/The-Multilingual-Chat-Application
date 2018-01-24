@@ -61,6 +61,10 @@
         <activity
             android:name=".activity.AddContactsActivity"
             android:label="@string/title_activity_contacts"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.DemoActivity"
+            android:label="@string/title_activity_demo"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

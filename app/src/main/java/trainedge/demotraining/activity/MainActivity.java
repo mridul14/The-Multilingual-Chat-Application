@@ -191,7 +191,6 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     }*/
 
     private void handleFacebookAccessToken(AccessToken token) {
-        //Log.d(TAG, "handleFacebookAccessToken:" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -256,7 +255,8 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     }
 
 
-    @Override
+
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -271,17 +271,20 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-       /* if (id == R.id.action_settings) {
+       *//* if (id == R.id.action_settings) {
             return true;
         }
-*/
+*//*
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
     @Override
     public void onClick(View view) {
         signIn();
     }
+
+
+
 }
 
