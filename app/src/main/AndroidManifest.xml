@@ -3,6 +3,8 @@
     package="trainedge.demotraining">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
 
     <application
         android:allowBackup="true"
@@ -23,9 +25,12 @@
         </activity>
 
         <meta-data
+            android:name="com.google.android.gms.versiion"
+            android:value="@integer/google_play_services_version"/>
+        <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-        ...
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
