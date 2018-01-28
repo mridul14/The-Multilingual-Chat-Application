@@ -53,7 +53,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.NextActivity"
-            android:label="@string/title_activity_next" />
+            android:label="@string/title_activity_next"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.InviteActivity"
             android:label="@string/title_activity_invite"
