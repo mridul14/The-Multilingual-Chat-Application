@@ -37,7 +37,7 @@ import trainedge.demotraining.fragment.ChatFragment;
 import trainedge.demotraining.fragment.ContactsFragment;
 import trainedge.demotraining.fragment.InviteFragment;
 
-public class NextActivity extends BasicActivity {
+public class NextActivity extends BasicActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int INVITE_REQUEST_CODE = 99;
     private ViewPager viewPager;
@@ -127,7 +127,6 @@ public class NextActivity extends BasicActivity {
             super.onBackPressed();
         }
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
