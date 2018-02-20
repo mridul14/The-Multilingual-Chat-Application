@@ -70,7 +70,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else {
             ReceiverHolder rh = (ReceiverHolder) holder;
             MessageList messageList = chatList.get(position);
-            rh.text_message_body.setText(messageList.content);
+            rh.text_message_body.setText(messageList.translated);
             rh.text_message_name.setText("");
             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
             cal.setTimeInMillis(messageList.Time);

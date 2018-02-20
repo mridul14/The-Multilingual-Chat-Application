@@ -147,7 +147,8 @@ public class ChatActivity extends AppCompatActivity {
                     return;
                 }
                 MessageList msgTobeSent = new MessageList(receiverId, senderId, Time, content, receiver_lang, sender_lang);
-                myContactsDb.push().setValue(msgTobeSent);
+                new TranslationTask().execute(msgTobeSent);
+               // myContactsDb.push().setValue(msgTobeSent);
                 et_chatbox.setText("");
 
             }
@@ -203,7 +204,7 @@ public class ChatActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(MessageList... objects) {
-            MessageList message=(MessageList)objects[0];
+            MessageList message = (MessageList) objects[0];
             translate(message);
             return null;
         }

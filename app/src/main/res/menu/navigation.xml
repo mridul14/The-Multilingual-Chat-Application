@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_add_contact"
+        android:id="@+id/Contacts"
         android:icon="@drawable/ic_contacts_black_24dp"
         android:title="@string/title_contacts" />
 
@@ -10,10 +10,10 @@
         android:id="@+id/navigation_chat"
         android:icon="@drawable/ic_chat_black_24dp"
         android:title="@string/title_chats" />
-
     <item
-        android:id="@+id/navigation_invite"
-        android:icon="@drawable/ic_share_black_24dp"
-        android:title="@string/title_invites" />
+        android:id="@+id/navigation_add_contact"
+        android:icon="@drawable/ic_person_add_black_24dp"
+        android:title="Add Contact" />
+
 
 </menu>

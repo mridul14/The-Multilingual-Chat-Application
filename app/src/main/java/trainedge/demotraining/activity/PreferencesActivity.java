@@ -3,26 +3,25 @@ package trainedge.demotraining.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 import trainedge.demotraining.adapter.DataAdapter;
 import trainedge.demotraining.R;
 import trainedge.demotraining.model.Data;
+import trainedge.demotraining.model.InfoModel;
 
-public class PreferencesActivity extends AppCompatActivity implements View.OnClickListener {
+public class PreferencesActivity extends BasicActivity implements View.OnClickListener {
 
-
+    public static final String LANG_PREF = "lang_pref";
+    public static final String IS_VISITED = "is_visited";
+    public static final String LANG_KEY = "lang_key";
     private RecyclerView rvLanguages;
 
-    private ArrayList<Data> dataItems,actualData;
+    private ArrayList<InfoModel> data,actualData;
     private SharedPreferences lang_pref;
 
 
@@ -38,18 +37,19 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
             finish();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+*/
         dataGenerator();
         rvLanguages = (RecyclerView) findViewById(R.id.rvLanguage);
         rvLanguages.setLayoutManager(new LinearLayoutManager(this));
-        rvLanguages.setAdapter(new DataAdapter(this,dataItems,actualData));
+        DataAdapter dAdapter=new DataAdapter(this,data,actualData);
+        rvLanguages.setAdapter(dAdapter);
 
 
 
 
-        lang_pref = getSharedPreferences("lang_pref",MODE_PRIVATE);
+        //lang_pref = getSharedPreferences("lang_pref",MODE_PRIVATE);
 /*
         if (lang_pref.getBoolean("is_visited",false)){
             Intent intent=new Intent(PreferencesActivity.this,Main2Activity.class);
@@ -70,68 +70,68 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
     private void dataGenerator() {
 
-        dataItems = new ArrayList<>();
+        data = new ArrayList<>();
         actualData = new ArrayList<>();
-        dataItems.add(new Data("English"));
-        actualData.add(new Data("en"));
-        dataItems.add(new Data("Hindi"));
-        actualData.add(new Data("hi"));
-        dataItems.add(new Data("Arabic"));
-        actualData.add(new Data("ar"));
-        dataItems.add(new Data("Armenian"));
-        actualData.add(new Data("hy"));
-        dataItems.add(new Data("Albanian"));
-        actualData.add(new Data("sq"));
-        dataItems.add(new Data("Azerbaijan"));
-        actualData.add(new Data("az"));
-        dataItems.add(new Data("Afrikaans"));
-        actualData.add(new Data("af"));
-        dataItems.add(new Data("Basque"));
-        actualData.add(new Data("eu"));
-        dataItems.add(new Data("Belarusian"));
-        actualData.add(new Data("be"));
-        dataItems.add(new Data("Bulgarian"));
-        actualData.add(new Data("bg"));
-        dataItems.add(new Data("Welsh"));
-        actualData.add(new Data("cy"));
-        dataItems.add(new Data("Vietnamese"));
-        actualData.add(new Data("vi"));
-        dataItems.add(new Data("Hungarian"));
-        actualData.add(new Data("hu"));
-        dataItems.add(new Data("Haitian (Creole)"));
-        actualData.add(new Data("ht"));
-        dataItems.add(new Data("Galician"));
-        actualData.add(new Data("gl"));
-        dataItems.add(new Data("Dutch"));
-        actualData.add(new Data("nl"));
-        dataItems.add(new Data("Greek"));
-        actualData.add(new Data("el"));
-        dataItems.add(new Data("Georgian"));
-        actualData.add(new Data("ka"));
-        dataItems.add(new Data("Danish"));
-        actualData.add(new Data("da"));
-        dataItems.add(new Data("Yiddish"));
-        actualData.add(new Data("he"));
-        dataItems.add(new Data("Indonesian"));
-        actualData.add(new Data("id"));
-        dataItems.add(new Data("Irish"));
-        actualData.add(new Data("ga"));
-        dataItems.add(new Data("Italian"));
-        actualData.add(new Data("it"));
-        dataItems.add(new Data("Icelandic"));
-        actualData.add(new Data("is"));
-        dataItems.add(new Data("Spanish"));
-        actualData.add(new Data("es"));
-        dataItems.add(new Data("Chinese"));
-        actualData.add(new Data("zh"));
-        dataItems.add(new Data("Korean"));
-        actualData.add(new Data("ko"));
-        dataItems.add(new Data("Latin"));
-        actualData.add(new Data("la"));
-        dataItems.add(new Data("German"));
-        actualData.add(new Data("de"));
-        dataItems.add(new Data("Polish"));
-        actualData.add(new Data("pl"));
+        data.add(new InfoModel("English"));
+        actualData.add(new InfoModel("en"));
+        data.add(new InfoModel("Hindi"));
+        actualData.add(new InfoModel("hi"));
+        data.add(new InfoModel("Arabic"));
+        actualData.add(new InfoModel("ar"));
+        data.add(new InfoModel("Armenian"));
+        actualData.add(new InfoModel("hy"));
+        data.add(new InfoModel("Albanian"));
+        actualData.add(new InfoModel("sq"));
+        data.add(new InfoModel("Azerbaijan"));
+        actualData.add(new InfoModel("az"));
+        data.add(new InfoModel("Afrikaans"));
+        actualData.add(new InfoModel("af"));
+        data.add(new InfoModel("Basque"));
+        actualData.add(new InfoModel("eu"));
+        data.add(new InfoModel("Belarusian"));
+        actualData.add(new InfoModel("be"));
+        data.add(new InfoModel("Bulgarian"));
+        actualData.add(new InfoModel("bg"));
+        data.add(new InfoModel("Welsh"));
+        actualData.add(new InfoModel("cy"));
+        data.add(new InfoModel("Vietnamese"));
+        actualData.add(new InfoModel("vi"));
+        data.add(new InfoModel("Hungarian"));
+        actualData.add(new InfoModel("hu"));
+        data.add(new InfoModel("Haitian (Creole)"));
+        actualData.add(new InfoModel("ht"));
+        data.add(new InfoModel("Galician"));
+        actualData.add(new InfoModel("gl"));
+        data.add(new InfoModel("Dutch"));
+        actualData.add(new InfoModel("nl"));
+        data.add(new InfoModel("Greek"));
+        actualData.add(new InfoModel("el"));
+        data.add(new InfoModel("Georgian"));
+        actualData.add(new InfoModel("ka"));
+        data.add(new InfoModel("Danish"));
+        actualData.add(new InfoModel("da"));
+        data.add(new InfoModel("Yiddish"));
+        actualData.add(new InfoModel("he"));
+        data.add(new InfoModel("Indonesian"));
+        actualData.add(new InfoModel("id"));
+        data.add(new InfoModel("Irish"));
+        actualData.add(new InfoModel("ga"));
+        data.add(new InfoModel("Italian"));
+        actualData.add(new InfoModel("it"));
+        data.add(new InfoModel("Icelandic"));
+        actualData.add(new InfoModel("is"));
+        data.add(new InfoModel("Spanish"));
+        actualData.add(new InfoModel("es"));
+        data.add(new InfoModel("Chinese"));
+        actualData.add(new InfoModel("zh"));
+        data.add(new InfoModel("Korean"));
+        actualData.add(new InfoModel("ko"));
+        data.add(new InfoModel("Latin"));
+        actualData.add(new InfoModel("la"));
+        data.add(new InfoModel("German"));
+        actualData.add(new InfoModel("de"));
+        data.add(new InfoModel("Polish"));
+        actualData.add(new InfoModel("pl"));
 
 
     }

@@ -3,6 +3,7 @@ package trainedge.demotraining.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class BasicActivity extends AppCompatActivity {
@@ -34,6 +37,7 @@ public class BasicActivity extends AppCompatActivity {
     }
 
     public void message(String msg){
+
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -43,20 +47,25 @@ public class BasicActivity extends AppCompatActivity {
         // Snackbar.make(v,msg,Snackbar.LENGTH_LONG).show();
     }
 
-    public void showAlert(String title,String message,String yes,String no,int icon){
+    public void showAlert(String title,String message,String yes,String no){
 
         AlertDialog dialog=new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
+                        Intent intent= new Intent(BasicActivity.this,MainActivity.class);
+                        startActivity(intent);
 
                     }
                 })
-                .setNegativeButton(no, new DialogInterface.OnClickListener() {
+                .setNegativeButton("no", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(context, "you cancelled logout", Toast.LENGTH_SHORT).show();
 
                     }
                 })

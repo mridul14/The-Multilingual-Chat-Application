@@ -2,6 +2,7 @@ package trainedge.demotraining.fragment;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,15 +44,12 @@ public class ChatFragment extends Fragment {
     private String mParam2;
     private RecyclerView rv_chat;
     private ImageView iv;
-    private boolean isLoaded;
+    private boolean isLoaded = false;
     private TextView tv_name;
     private List<ChatModel> chatName;
     private FirebaseUser currentUser;
     private ArrayList<String> chatKeys;
     private ChatAdapter chatAdapter;
-
-
-
 
 
     public ChatFragment() {
@@ -90,20 +89,33 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         rv_chat = view.findViewById(R.id.rv_chat);
-        chatName=new ArrayList<>();
-        setupChats(chatName);
-        currentUser= FirebaseAuth.getInstance().getCurrentUser();
-        final String emailPart=currentUser.getEmail().split("@")[0];
-        chatKeys=new ArrayList<String>();
+        chatName = new ArrayList<>();
+
+        iv = view.findViewById(R.id.ivPhoto);
+        tv_name = view.findViewById(R.id.tvUser);
+
+
+        //setupChats(chatName);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final String emailPart = currentUser.getEmail().split("@")[0];
+        chatKeys = new ArrayList<String>();
         FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren()){
+                if (dataSnapshot.hasChildren()) {
                     chatName.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        findContacts(snapshot);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.getKey().contains(emailPart))
+                            findContacts(snapshot);
                     }
                 }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupChats(chatName);
+                    }
+                }, 5000);
+
             }
 
             @Override
@@ -111,14 +123,13 @@ public class ChatFragment extends Fragment {
 
             }
         });
-        iv = view.findViewById(R.id.ivPhoto);
-        tv_name = view.findViewById(R.id.tvUser);
+
 
         return view;
     }
 
     private void setupChats(List<ChatModel> chatName) {
-        chatAdapter = new ChatAdapter(chatName,getActivity());
+        chatAdapter = new ChatAdapter(chatName, getActivity());
         rv_chat.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
@@ -131,36 +142,41 @@ public class ChatFragment extends Fragment {
         String person1Id = snapshot.child("person1").getValue(String.class);
         String person2Id = snapshot.child("person2").getValue(String.class);
         if (!person1Id.equals(currentUser.getUid())) {
-            findUserById(person1Id,snapshot);
+            findUserById(person1Id, snapshot);
         } else {
-            findUserById(person2Id,snapshot);
+            findUserById(person2Id, snapshot);
         }
     }
 
 
-    public void findUserById(final String uid, DataSnapshot snapshot){
-        final String chatKey=snapshot.getKey();
-        DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
-        users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-            if(dataSnapshot.hasChildren()){
+    public void findUserById(final String uid, DataSnapshot snapshot) {
+        if (uid == null || snapshot == null) {
+            Toast.makeText(getContext(), "internal error", Toast.LENGTH_SHORT).show();
+        } else {
+
+            final String chatKey = snapshot.getKey();
+            final DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            users.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChildren()) {
 //                User user = dataSnapshot.getValue(User.class);
 //                tv_name.setText(user.name);
 //                Glide.with(getActivity()).load(user.photo).into(iv);
-                String name=dataSnapshot.child("name").getValue(String.class);
-                String photo=dataSnapshot.child("photo").getValue(String.class);
+                        String name = dataSnapshot.child("name").getValue(String.class);
+                        String photo = dataSnapshot.child("photo").getValue(String.class);
 
-                chatName.add(new ChatModel(uid,name,photo,chatKey));
-                chatAdapter.notifyDataSetChanged();
-            }
-            }
+                        chatName.add(new ChatModel(uid, name, photo, chatKey));
+                    }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
-
 }
+

@@ -55,13 +55,7 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
         final String[] colors = getResources().getStringArray(R.array.default_preview);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_person_add_black_24dp),
-                        Color.parseColor(colors[0]))
-                        .title("Add Contact")
-                        .build()
-        );
+
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_contacts_black_24dp),
@@ -78,11 +72,19 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_person_add_black_24dp),
+                        Color.parseColor(colors[0]))
+                        .title("Add Contact")
+                        .build()
+        );
+
+       /* models.add(
+                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_share_black_24dp),
                         Color.parseColor(colors[3]))
                         .title("Invite")
                         .build()
-        );
+        );*/
 
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 1);
@@ -133,16 +135,16 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_chat) {
             viewPager.setCurrentItem(0);
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_contact) {
             viewPager.setCurrentItem(1);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_add_contacts) {
             viewPager.setCurrentItem(2);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_about) {
             viewPager.setCurrentItem(3);
 
         } else if (id == R.id.nav_share) {
@@ -191,15 +193,14 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
                     return ChatFragment.newInstance("","");
                 case 2:
                     return ContactsFragment.newInstance("","");
-                case 3:
-                    return InviteFragment.newInstance("","");
+
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
     }
 

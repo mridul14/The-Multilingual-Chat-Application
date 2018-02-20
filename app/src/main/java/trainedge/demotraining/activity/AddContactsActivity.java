@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,7 @@ public class AddContactsActivity extends BasicActivity {
     private FirebaseUser currentUser;
     private boolean isLoaded = false;
     private ImageView ivSearch;
+    private TextView tv_name;
 
 
     @Override
@@ -43,8 +45,9 @@ public class AddContactsActivity extends BasicActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final List<User> userData = new ArrayList<>();
+        final List<User> data = new ArrayList<>();
         rvUser = (RecyclerView) findViewById(R.id.rvUser);
+        tv_name = (TextView) findViewById(R.id.tv_name);
         etSearchTerm = (EditText) findViewById(R.id.etSearchTerm);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         rvUser.setLayoutManager(new LinearLayoutManager(this));
@@ -90,7 +93,7 @@ public class AddContactsActivity extends BasicActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             int pos = 0;
-                            userData.clear();
+                            data.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 boolean isPresent = false;
                                 String email = snapshot.child("email").getValue(String.class);
@@ -109,8 +112,8 @@ public class AddContactsActivity extends BasicActivity {
                                 }
                                 pos++;
                             }
-                            if (userData.size() == 0) {
-                                userData.clear();
+                            if (data.size() == 0) {
+                                data.clear();
                                // uAdapter.notifyDataSetChanged();
                             }
                             hideProgressDialog();

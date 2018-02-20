@@ -1,5 +1,6 @@
 package trainedge.demotraining.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import com.google.android.gms.common.api.ResultCallback;
 
 import trainedge.demotraining.R;
 
-public class InviteActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class InviteActivity extends BasicActivity implements View.OnClickListener {
 
     private GoogleApiClient mGoogleApiClient;
     boolean autodeeplink = true;
@@ -30,6 +31,8 @@ public class InviteActivity extends AppCompatActivity implements GoogleApiClient
     private Button btnFeedback;
     private Button btnRate;
     private Button btnAbout;
+    private static final int INVITE_REQUEST_CODE = 99;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class InviteActivity extends AppCompatActivity implements GoogleApiClient
         setContentView(R.layout.activity_invite);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         btnInvite = (Button) findViewById(R.id.btnInvite);
         btnFeedback = (Button) findViewById(R.id.btnFeedback);
@@ -49,7 +53,7 @@ public class InviteActivity extends AppCompatActivity implements GoogleApiClient
         btnRate.setOnClickListener(this);
         btnAbout.setOnClickListener(this);
 
-        //coding
+        /*//coding
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(AppInvite.API)
                 .enableAutoManage(this, this)
@@ -69,19 +73,27 @@ public class InviteActivity extends AppCompatActivity implements GoogleApiClient
                                 }
                             }
                         }
-                );
+                );*/
     }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "no connection", Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnInvite:
-                Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                try {
+                    Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                            .setMessage("Join your friends")
+                            .setDeepLink(Uri.parse("/link"))
+                            .setCallToActionText(getString(R.string.invitation_cta))
+                            .build();
+                    startActivityForResult(intent,INVITE_REQUEST_CODE  );
+                } catch (ActivityNotFoundException ac) {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    //sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharing_book_title, bookTitle));
+                    sendIntent.setType("text/plain");
+                    startActivity(sendIntent);
+                }
+               /* Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
                         .setMessage(getString(R.string.invitation_message))
                         //.setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
                         .setCallToActionText(getString(R.string.invitation_cta))
@@ -90,7 +102,7 @@ public class InviteActivity extends AppCompatActivity implements GoogleApiClient
                         //AppInviteInvitation.IntentBuilder.PlatformMode.PROJECT_PLATFORM_IOS,
                         //getString(R.string.ios_app_client_id))
                         .build();
-                startActivity(intent);
+                startActivity(intent);*/
                 break;
 
             case R.id.btnFeedback:
@@ -111,4 +123,43 @@ public class InviteActivity extends AppCompatActivity implements GoogleApiClient
         }
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == INVITE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                // Log.d(TAG, getString(R.string.sent_invitations_fmt, ids.length));
+                //log("invite");
+            } else {
+
+                //Log.d(TAG, "invite send failed or cancelled:" + requestCode + ",resultCode:" + resultCode);
+                //log("invite send failed or cancelled");
+            }
+        }
+    }
+    private void checkIfComingFromInvite(){
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(AppInvite.API)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+                        //log( "onConnectionFailed: onResult:" + connectionResult.toString());
+                    }
+                })
+                .build();
+        AppInvite.AppInviteApi.getInvitation(googleApiClient, this, true)
+                .setResultCallback(
+                        new ResultCallback<AppInviteInvitationResult>() {
+                            @Override
+                            public void onResult(AppInviteInvitationResult result) {
+                                //log("getInvitation:onResult:" + result.getStatus());
+
+                            }
+                        });
+    }
+
+
+
+
 }

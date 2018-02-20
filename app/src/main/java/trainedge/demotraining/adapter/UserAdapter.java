@@ -64,8 +64,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
 
     }
 
-    private void addToFirebase(User user, Button btnAdd) {
-        invitedUser.child(user.id).setValue(user.name, new DatabaseReference.CompletionListener() {
+    private void addToFirebase(User data, Button btnAdd) {
+        invitedUser.child(data.id).setValue(data.name, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError == null) {

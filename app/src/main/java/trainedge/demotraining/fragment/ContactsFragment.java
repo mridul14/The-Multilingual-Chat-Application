@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +44,7 @@ public class ContactsFragment extends Fragment {
     private List<User> data;
     private boolean isLoaded=false;
     private UserAdapter sAdapter;
+    private TextView tv_name;
 
 
     public ContactsFragment() {
@@ -74,6 +76,7 @@ public class ContactsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_contacts, container, false);
         rvUser = view.findViewById(R.id.rvUser);
+        tv_name = view.findViewById(R.id.tv_name);
         etSearchTerm =view.findViewById(R.id.etSearchTerm);
         ivSearch = view.findViewById(R.id.ivSearch);
         /*final List<User> myContacts=new ArrayList<>();
@@ -99,7 +102,7 @@ public class ContactsFragment extends Fragment {
                         loadMyContacts.add(snapshot.getKey());
 
                     }
-                    Toast.makeText(getActivity() , "Data has been loaded", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity() , "Data has been loaded", Toast.LENGTH_SHORT).show();
                 }
                 isLoaded = true;
                 //findContact(allDb, myContacts, frdId);
@@ -119,7 +122,7 @@ public class ContactsFragment extends Fragment {
                 final String searchTerm = etSearchTerm.getText().toString().trim();
 
                 if (isLoaded){
-                    Toast.makeText(getActivity(), "Finding....", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Finding....", Toast.LENGTH_SHORT).show();
                     userDb.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -164,39 +167,5 @@ public class ContactsFragment extends Fragment {
         return view;
     }
 
-//    private void findContact(DatabaseReference allDb, final List<User> myContacts, final List<String> frdId) {
-//        if (isLoaded) {
-//            Toast.makeText(getActivity(), "Finding...", Toast.LENGTH_SHORT).show();
-//            allDb.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    int pos = 0;
-//                    myContacts.clear();
-//                    if (dataSnapshot.hasChildren()){
-//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                            if (frdId.contains(snapshot.getKey())){
-//                                myContacts.add(snapshot.getValue(User.class));
-//                            }
-//                        }
-//
-//                    }
-//
-//                    else {
-//                        Toast.makeText(getActivity(), "could not find data", Toast.LENGTH_SHORT).show();
-//                    }
-//                    if (myContacts.size()>0){
-//                        sAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    // hideProgressDialog();
-//
-//                }
-//            });
-//
-//        }
-//    }
 
 }

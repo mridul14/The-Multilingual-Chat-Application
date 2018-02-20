@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -45,13 +49,18 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
 
     private CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
-
-    private static final int RC_SIGN_IN = 1;
+      private static final int RC_SIGN_IN = 1;
+      private static final int REQUEST_SIGNUP = 0;
     GoogleApiClient mGoogleApiClient;
 
     FirebaseAuth.AuthStateListener mAuthListener;
     private SignInButton btn;
     private DatabaseReference db;
+    private ImageView iv_logo;
+    private EditText et_email;
+    private EditText et_pass;
+    private Button btn_login;
+    private TextView link_signup;
 
 
     @Override
@@ -62,21 +71,17 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
         AppEventsLogger.activateApp(this);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       // setSupportActionBar(toolbar);
+        iv_logo = (ImageView) findViewById(R.id.iv_logo);
+        et_email = (EditText) findViewById(R.id.et_email);
+        et_pass = (EditText) findViewById(R.id.et_pass);
+        btn_login = (Button) findViewById(R.id.btn_login);
+        link_signup = (TextView) findViewById(R.id.link_signup);
 
-       /* mAuthListener=new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser()!=null){
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+        btn_login.setOnClickListener(this);
+        link_signup.setOnClickListener(this);
 
-
-                }
-            }
-        };*/
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
@@ -87,6 +92,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
             public void onSuccess(LoginResult loginResult) {
                 //Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                Toast.makeText(context, "please wait ...", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -185,7 +191,6 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
    /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }*/
@@ -255,36 +260,50 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     }
 
 
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-       *//* if (id == R.id.action_settings) {
-            return true;
-        }
-*//*
-        return super.onOptionsItemSelected(item);
-    }*/
-
-
     @Override
     public void onClick(View view) {
-        signIn();
+        int id=view.getId();
+        if (id==R.id.loginGoogle) {
+            signIn();
+        }
+        if (id==R.id.btn_login){
+            String email=et_email.getText().toString();
+            String password = et_pass.getText().toString();
+
+            if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                et_email.setError("enter a valid email address");
+            } else {
+                et_email.setError(null);
+            }
+
+            if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+                et_pass.setError("between 4 and 10 alphanumeric characters");
+            } else {
+                et_pass.setError(null);
+            }
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+
+                                Toast.makeText(MainActivity.this, task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
+        if (id==R.id.link_signup){
+            Intent intent=new Intent(MainActivity.this,SignupActivity.class);
+            startActivityForResult(intent, REQUEST_SIGNUP);
+        }
     }
 
 
 
 }
-

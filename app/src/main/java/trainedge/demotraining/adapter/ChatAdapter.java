@@ -41,13 +41,13 @@ public ContactsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 @Override
 public void onBindViewHolder(ContactsHolder holder, int position) {
 
-final ChatModel data=chatName.get(position);
+        final ChatModel data=chatName.get(position);
         holder.tvUser.setText(data.name);
         Glide.with(context).load(data. photo).into(holder.ivPhoto);
 
         holder.container1.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
         Intent intent=new Intent(context, ChatActivity.class);
         context.startActivity(intent);
 
@@ -59,7 +59,7 @@ public void onClick(View view) {
 
 @Override
 public int getItemCount() {
-        return 0;
+        return chatName.size();
         }
 
 
