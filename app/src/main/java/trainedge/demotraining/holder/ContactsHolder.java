@@ -14,7 +14,7 @@ public class ContactsHolder extends RecyclerView.ViewHolder {
 
 
     public final TextView tvUser;
-    public final TextView tvUserMail;
+    //public final TextView tvUserMail;
     public final CardView container1;
     public final ImageView ivPhoto;
 
@@ -22,7 +22,7 @@ public ContactsHolder(View itemView) {
         super(itemView);
 
         tvUser = itemView.findViewById(R.id.tvUser);
-        tvUserMail = itemView.findViewById(R.id.tvUserMail);
+        //tvUserMail = itemView.findViewById(R.id.tvUserMail);
         container1 = itemView.findViewById(R.id.container1);
         ivPhoto = itemView.findViewById(R.id.ivPhoto);
         }

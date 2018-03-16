@@ -71,14 +71,14 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ReceiverHolder rh = (ReceiverHolder) holder;
             MessageList messageList = chatList.get(position);
             rh.text_message_body.setText(messageList.translated);
-            rh.text_message_name.setText("");
+            //rh.text_message_name.setText("");
             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
             cal.setTimeInMillis(messageList.Time);
             String date = DateFormat.format("hh:mm", cal).toString();
             rh.text_message_time.setText(date);
             Object[] translationParams = new Object[]{rh.text_message_body, messageList.content, messageList.senderlang, messageList.receiverlang};
 
-            Glide.with(chatActivity).load(R.drawable.ic_person_outline_black_24dp).into(rh.image_message_profile);
+            //Glide.with(chatActivity).load(R.drawable.ic_person_outline_black_24dp).into(rh.image_message_profile);
 
         }
 

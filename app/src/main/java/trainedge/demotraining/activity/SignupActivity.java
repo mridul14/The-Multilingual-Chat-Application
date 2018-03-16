@@ -109,6 +109,12 @@ public class SignupActivity extends BasicActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     public void onSignupSuccess() {
         btn_signup.setEnabled(true);
         setResult(RESULT_OK, null);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container1"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="90dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,33 +18,27 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/btnAdd"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="monospace"
             android:text="TextView"
-            tools:layout_editor_absoluteX="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="24dp" />
-
-        <TextView
-            android:id="@+id/tvUserMail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/btnAdd"
-            android:layout_marginStart="16dp"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvUser" />
-
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivPhoto"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageView
             android:id="@+id/ivPhoto"
-            android:layout_width="134dp"
-            android:layout_height="93dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
     </android.support.constraint.ConstraintLayout>

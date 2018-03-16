@@ -89,19 +89,15 @@ public class DemoActivity extends BasicActivity
         if (id == R.id.nav_chat) {
             Intent intent=new Intent(DemoActivity.this,ChatActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_contact) {
-            Intent intent=new Intent(DemoActivity.this,ContactsFragment.class);
-            startActivity(intent);
-
-        } else if (id == R.id.nav_add_contacts) {
+        }  else if (id == R.id.nav_add_contacts) {
             Intent intent=new Intent(DemoActivity.this,AddContactFragment.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_about) {
-            Intent intent=new Intent(DemoActivity.this,InviteActivity.class);
+        } else if (id == R.id.nav_about){
+            Intent intent=new Intent(DemoActivity.this,AboutActivity.class);
             startActivity(intent);
-
-        } else if (id == R.id.nav_logout) {
+        }
+        else if (id == R.id.nav_logout) {
             showAlert("EXIT MESSAGE", "ARE YOU SURE", "YES", "NO");
 
 

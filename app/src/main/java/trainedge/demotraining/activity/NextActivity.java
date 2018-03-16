@@ -59,17 +59,17 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_contacts_black_24dp),
-                        Color.parseColor(colors[1]))
+                        Color.parseColor(colors[2]))
                         .title("Chat")
                         .build()
         );
-        models.add(
+/*        models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_person_outline_black_24dp),
                         Color.parseColor(colors[2]))
                         .title("Contacts")
                         .build()
-        );
+        );*/
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_person_add_black_24dp),
@@ -138,16 +138,14 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
         if (id == R.id.nav_chat) {
             viewPager.setCurrentItem(0);
 
-        } else if (id == R.id.nav_contact) {
+        }else if (id == R.id.nav_add_contacts) {
             viewPager.setCurrentItem(1);
 
-        } else if (id == R.id.nav_add_contacts) {
-            viewPager.setCurrentItem(2);
-
-        } else if (id == R.id.nav_about) {
-            viewPager.setCurrentItem(3);
-
-        } else if (id == R.id.nav_share) {
+        }else if (id==R.id.nav_about){
+            Intent intent=new Intent(NextActivity.this,InviteActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_share) {
             try {
                 Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
                         .setMessage("Join your friends")
@@ -189,9 +187,9 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
             switch (position){
                 case 0:
                     return AddContactFragment.newInstance("","");
+                /*case 1:
+                    return ChatFragment.newInstance("","");*/
                 case 1:
-                    return ChatFragment.newInstance("","");
-                case 2:
                     return ContactsFragment.newInstance("","");
 
             }
@@ -200,7 +198,7 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
     }
 

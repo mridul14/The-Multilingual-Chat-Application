@@ -62,7 +62,6 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     private Button btn_login;
     private TextView link_signup;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +84,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.loginFacebook);
+      LoginButton loginButton = (LoginButton) findViewById(R.id.loginFacebook);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -160,7 +159,6 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
             }
         }
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
