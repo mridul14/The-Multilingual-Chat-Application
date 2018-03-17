@@ -49,9 +49,9 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
 
     private CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
-      private static final int RC_SIGN_IN = 1;
-      private static final int REQUEST_SIGNUP = 0;
-    GoogleApiClient mGoogleApiClient;
+    private static final int RC_SIGN_IN = 9001;
+    private static final int REQUEST_SIGNUP = 0;
+    private GoogleApiClient mGoogleApiClient;
 
     FirebaseAuth.AuthStateListener mAuthListener;
     private SignInButton btn;
