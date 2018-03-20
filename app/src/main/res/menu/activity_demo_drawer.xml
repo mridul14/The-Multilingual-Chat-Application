@@ -31,7 +31,11 @@
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Send Feedback" />
+            <item
+                android:id="@+id/nav_apk"
+                android:icon="@drawable/ic_screen_share_black_24dp"
+                android:title="Share apk"/>
         </menu>
     </item>
 

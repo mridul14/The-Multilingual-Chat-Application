@@ -1,6 +1,28 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="trainedge.demotraining.activity.MainActivity">
+
+</menu>-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="trainedge.demotraining.activity.ChatActivity">
+
+<item
+    android:id="@+id/action_text"
+    android:orderInCategory="300"
+    android:title="TextToSpeech"
+    android:icon="@drawable/ic_volume_up_black_24dp"
+    app:showAsAction="ifRoom"></item>
+<item
+    android:id="@+id/action_speech"
+    android:orderInCategory="300"
+    android:title="SpeechToText"
+    android:icon="@drawable/ic_mic_black_24dp"
+    app:showAsAction="ifRoom">
+
+</item>
 
 </menu>

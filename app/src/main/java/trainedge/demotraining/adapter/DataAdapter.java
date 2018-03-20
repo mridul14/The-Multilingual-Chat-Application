@@ -62,7 +62,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataHolder> {
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.showProgressDialog("Updating your Preferences");
+                activity.showProgressDialog("Updating your Preference");
                 String lang_name = actualItem.getTitle();
                 addToFirebase(lang_name);
 
@@ -83,7 +83,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataHolder> {
                 if (databaseError == null) {
                     Toast.makeText(activity, "Success", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = lang_pref.edit();
-                    editor.putString(PreferencesActivity.LANG_PREF, lang_name);
+                    editor.putString(PreferencesActivity.LANG_KEY, lang_name);
                     editor.putBoolean(PreferencesActivity.IS_VISITED, true);
                     editor.apply();
 

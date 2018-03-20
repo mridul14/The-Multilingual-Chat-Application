@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.appinvite.AppInviteInvitation;
@@ -50,6 +51,8 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //getSupportActionBar().setTitle("Multilingual Chat Application");
+        //toolbar.setLogo(R.drawable.ic_chat_black_24dp);
         final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb);
         viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
@@ -141,6 +144,10 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
         }else if (id == R.id.nav_add_contacts) {
             viewPager.setCurrentItem(1);
 
+        }else if (id==R.id.nav_logout){
+            showAlert("EXIT MESSAGE", "ARE YOU SURE", "YES", "NO");
+
+
         }else if (id==R.id.nav_about){
             Intent intent=new Intent(NextActivity.this,InviteActivity.class);
             startActivity(intent);
@@ -169,6 +176,8 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
             feedbackIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.mail_feedback_message));
             startActivity(Intent.createChooser(feedbackIntent, getString(R.string.title_send_feedback)));
 
+        } else if (id == R.id.nav_apk){
+            Toast.makeText(context, "hii", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

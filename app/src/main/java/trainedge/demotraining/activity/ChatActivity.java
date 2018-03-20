@@ -1,13 +1,20 @@
 package trainedge.demotraining.activity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,16 +26,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mapzen.speakerbox.Speakerbox;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -37,9 +44,7 @@ import trainedge.demotraining.R;
 import trainedge.demotraining.adapter.MessageListAdapter;
 import trainedge.demotraining.model.MessageList;
 
-import static android.R.id.message;
-
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private FirebaseUser currentuser;
     private String senderId;
@@ -59,6 +64,13 @@ public class ChatActivity extends AppCompatActivity {
     private String recName;
     private DatabaseReference myContactsDb;
     private String url_format;
+    private Speakerbox sbox;
+    private String a="";
+    //private Button btn_sbox;
+    private TextToSpeech tts;
+    private int lang;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -66,6 +78,13 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        sbox = new Speakerbox(getApplication());
+
+        tts = new TextToSpeech(this,this);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -98,6 +117,19 @@ public class ChatActivity extends AppCompatActivity {
         map.put("person2", receiverId);
         myContactsDb.setValue(map);*/
 
+       /* btn_sbox = (Button) findViewById(R.id.btn_sbox);
+        btn_sbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(ChatActivity.this, a, Toast.LENGTH_SHORT).show();
+                et_chatbox.setText(a);
+                //sbox.play(a);
+                speakOut();
+                a="";
+
+
+            }
+        });*/
         mAdapter = new MessageListAdapter(this, chatList);
 
         rv_message_list = (RecyclerView) findViewById(R.id.rv_message_list);
@@ -157,6 +189,64 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    et_chatbox.setText(result.get(0));
+                }
+                break;
+            }
+
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_text) {
+            speakOut();
+            a="";
+            return true;
+        }
+        if (id == R.id.action_speech){
+            promptSpeechInput();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * Translate a given text between a source and a destination language
      */
@@ -190,6 +280,8 @@ public class ChatActivity extends AppCompatActivity {
             jObject = new JSONObject(response.body().string());
             JSONObject data = jObject.getJSONObject("responseData");
             translated=data.getString("translatedText");
+            a = a +translated;
+            change(receiverLang);
             message.setTranslated(translated);
             myContactsDb.push().setValue(message);
             //result.setText(data.getString("translatedText"));
@@ -199,6 +291,105 @@ public class ChatActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private int change(String receiverLang) {
+        lang = 0;
+        if (receiverLang=="en"){
+            lang = tts.setLanguage(Locale.ENGLISH);
+        } else if (receiverLang=="hi"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="ar"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="hy"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="sq"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="az"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="af"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="eu"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="be"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="bg"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="cy"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="vi"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="hu"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="ht"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="gl"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="nl"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="el"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="ka"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="da"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="he"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="id"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="ga"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="it"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="is"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="es"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="zh"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="ko"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="la"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="de"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        } else if (receiverLang=="pl"){
+            lang=tts.setLanguage(new Locale(receiverLang));
+        }
+
+        return lang;
+    }
+
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+
+            int result = lang;
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                //Log.e("TTS", "This Language is not supported");
+                Toast.makeText(this, "language not supported", Toast.LENGTH_SHORT).show();
+            } else {
+                //btn_sbox.setEnabled(true);
+                speakOut();
+            }
+
+        } else {
+            //Log.e("TTS", "Initilization Failed!");
+            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void speakOut() {
+
+        //String text = txtText.getText().toString();
+
+        tts.speak(a, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+
     public class TranslationTask extends AsyncTask<MessageList,Void ,String>{
 
 
