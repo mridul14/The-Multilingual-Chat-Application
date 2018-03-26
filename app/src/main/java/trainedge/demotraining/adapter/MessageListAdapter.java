@@ -39,6 +39,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final FirebaseUser user;
     public OkHttpClient client = new OkHttpClient();
 
+
     public MessageListAdapter(ChatActivity chatActivity, List<MessageList> chatList) {
 
         this.chatList = chatList;
@@ -62,6 +63,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             SenderHolder sh = (SenderHolder) holder;
             MessageList messageList = chatList.get(position);
             sh.text_message_body.setText(messageList.content);
+
             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
             cal.setTimeInMillis(messageList.Time);
             String date = DateFormat.format("hh:mm", cal).toString();
@@ -71,6 +73,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ReceiverHolder rh = (ReceiverHolder) holder;
             MessageList messageList = chatList.get(position);
             rh.text_message_body.setText(messageList.translated);
+
             //rh.text_message_name.setText("");
             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
             cal.setTimeInMillis(messageList.Time);
@@ -81,6 +84,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             //Glide.with(chatActivity).load(R.drawable.ic_person_outline_black_24dp).into(rh.image_message_profile);
 
         }
+
 
     }
 
@@ -98,6 +102,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         return RECEIVER;
     }
+
 }
 
     /**

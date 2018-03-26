@@ -70,6 +70,8 @@ public class ChatActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private TextToSpeech tts;
     private int lang;
     private final int REQ_CODE_SPEECH_INPUT = 100;
+    private String b;
+    private String d;
 
 
     @Override
@@ -135,6 +137,7 @@ public class ChatActivity extends AppCompatActivity implements TextToSpeech.OnIn
         rv_message_list = (RecyclerView) findViewById(R.id.rv_message_list);
         rv_message_list.setLayoutManager(new LinearLayoutManager(this));
         rv_message_list.setAdapter(mAdapter);
+
 
 
         myContactsDb.addValueEventListener(new ValueEventListener() {
@@ -221,8 +224,6 @@ public class ChatActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_text) {
             speakOut();
-            a="";
-            return true;
         }
         if (id == R.id.action_speech){
             promptSpeechInput();
@@ -255,6 +256,7 @@ public class ChatActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         String translated = "";
         String original=message.content;
+
         String senderLang=message.senderlang;
         String receiverLang=message.receiverlang;
 
