@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -145,6 +146,7 @@ public class NextActivity extends BasicActivity implements NavigationView.OnNavi
             viewPager.setCurrentItem(1);
 
         }else if (id==R.id.nav_logout){
+
             showAlert("EXIT MESSAGE", "ARE YOU SURE", "YES", "NO");
 
 

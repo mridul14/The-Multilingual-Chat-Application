@@ -130,25 +130,15 @@ public class AddContactFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 if (databaseError != null) {
-                   // Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        /*ivSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String searchTerm = etSearchTerm.getText().toString().trim();
-                findContacts(allDb, myContacts, frdId);
-            }
-        });*/
         return view;
     }
 
     private void findContacts(DatabaseReference allDb, final List<User> myContacts, final List<String> frdId) {
         if (isLoaded) {
-            //showProgressDialog("Finding...");
-            //Toast.makeText(getActivity(), "Finding...", Toast.LENGTH_SHORT).show();
             allDb.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
