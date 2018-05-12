@@ -98,7 +98,7 @@ public class DemoActivity extends BasicActivity
             startActivity(intent);
         }
         else if (id == R.id.nav_logout) {
-            showAlert("EXIT MESSAGE", "ARE YOU SURE", "YES", "NO");
+            showAlert("Logout", "Are you sure!", "YES", "NO");
 
 
         } else if (id == R.id.nav_share) {

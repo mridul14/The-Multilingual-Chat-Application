@@ -266,7 +266,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
         }
         if (id==R.id.btn_login){
             String email=et_email.getText().toString();
-            String password = et_pass.getText().toString();
+            final String password = et_pass.getText().toString();
 
             if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 et_email.setError("enter a valid email address");
@@ -279,18 +279,28 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
             } else {
                 et_pass.setError(null);
             }
+
+            showProgressDialog("Just a moment!");
+            //authenticate user
             mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
+                            hideProgressDialog();
                             if (!task.isSuccessful()) {
-
-                                Toast.makeText(MainActivity.this, task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
+                                // there was an error
+                                if (password.length() < 6) {
+                                    et_pass.setError(getString(R.string.minimum_password));
+                                } else {
+                                    Toast.makeText(MainActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         }
                     });
